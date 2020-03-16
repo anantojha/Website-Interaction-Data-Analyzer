@@ -70,7 +70,7 @@ for row in myFile:
 		date_time_obj = datetime.datetime.strptime(row[0], '%Y-%m-%d %H:%M:%S')
 		data = [date_time_obj,row[1],row[3],row[4],row[5],row[6]]
 		list.get(row[1]).append(data)
-		print(date_time_obj)
+		
 
 
 
