@@ -1,0 +1,16 @@
+userID,SCHEME,# of Logins,# of Success,# of Failure,Average Time,Average Success Time,Average Fail Time
+ipt113,testpasstiles,28,16,12,0:00:10,0:00:11,0:00:09
+ipt110,testpasstiles,18,14,4,0:00:18,0:00:11,0:00:42
+ipt131,testpasstiles,14,11,3,0:00:39,0:00:37,0:00:46
+ipt145,testpasstiles,15,14,1,0:00:25,0:00:25,0:00:34
+ipt119,testpasstiles,17,15,2,0:00:14,0:00:14,0:00:09
+ipt143,testpasstiles,17,14,3,4:07:17,5:00:13,0:00:16
+ipt109,testpasstiles,14,14,0,0:00:24,0:00:24,0
+ipt133,testpasstiles,15,14,1,4:47:14,5:07:45,0:00:06
+ipt134,testpasstiles,19,14,5,0:00:28,0:00:22,0:00:46
+ipt101,testpasstiles,31,15,16,0:00:20,0:00:11,0:00:28
+ipt137,testpasstiles,19,15,4,0:00:20,0:00:20,0:00:22
+ipt136,testpasstiles,17,14,3,0:00:13,0:00:13,0:00:17
+ipt104,testpasstiles,11,11,0,0:00:22,0:00:22,0
+ipt105,testpasstiles,21,14,7,0:00:11,0:00:09,0:00:15
+ipt106,testpasstiles,20,14,6,4:23:55,6:16:57,0:00:10
