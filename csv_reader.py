@@ -43,7 +43,7 @@ csvFileText = open(newFileNameText,'w')
 outFileImage =csv.writer(csvFileImage)
 outFileText =csv.writer(csvFileText)
 #Header for new file
-header=['userID', 'SCHEME', '# of Logins', '# of Success', '# of Failure', 'Average Time', 'Average Success Time', 'Average Fail Time']
+header=['userID', 'SCHEME', '# of Logins', '# of Success', '# of Failure', 'Average Login Time', 'Average Login Success Time', 'Average Login Failure Time']
 
 #write header to new file
 outFileImage.writerow(header)
