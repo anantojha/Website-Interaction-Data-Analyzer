@@ -25,29 +25,25 @@ import datetime
 #DOCUMENTS to read and write
 fileNameImage = 'imagept21.csv'
 fileNameText = 'text21.csv'
-newFileNameImage = 'imagept21Output.csv'
-newFileNameText = 'text21Output.csv'
+newFileNameOutput = 'combinedOutput.csv'
 
 #Open input csv file
-myCSVFileImage = open(fileNameImage, 'rb')
-myCSVFileText = open(fileNameText, 'rb')
+myCSVFileImage = open(fileNameImage, 'r')
+myCSVFileText = open(fileNameText, 'r')
 myFileImage = csv.reader(myCSVFileImage)
 myFileText = csv.reader(myCSVFileText)
 
 
 #Create new csv file and make it appendable
 #other options: w = overwrite, r = read, a = append, ab = append binary.
-csvFileImage = open(newFileNameImage,'w')
-csvFileText = open(newFileNameText,'w')
+csvFileOutput = open(newFileNameOutput,'w', newline='')
 
-outFileImage =csv.writer(csvFileImage)
-outFileText =csv.writer(csvFileText)
+outFile =csv.writer(csvFileOutput,  quotechar='|')
 #Header for new file
 header=['userID', 'SCHEME', '# of Logins', '# of Success', '# of Failure', 'Average Login Time', 'Average Login Success Time', 'Average Login Failure Time']
 
 #write header to new file
-outFileImage.writerow(header)
-outFileText.writerow(header)
+outFile.writerow(header)
 
 def roundSeconds(delta):
 	if(datetime.timedelta(microseconds=delta.microseconds) >= datetime.timedelta(microseconds=500000)):
@@ -131,12 +127,12 @@ def algorithm(myFile, outFile):
 
 
 #run Algorithm 
-algorithm(myFileImage, outFileImage)
-algorithm(myFileText, outFileText)
+algorithm(myFileImage, outFile)
+outFile.writerow('')
+algorithm(myFileText, outFile)
 
 #####CLOSE THE DOCUMENTS####
 
 myCSVFileImage.close()
 myCSVFileText.close()
-csvFileImage.close()
-csvFileText.close()
+csvFileOutput.close()
