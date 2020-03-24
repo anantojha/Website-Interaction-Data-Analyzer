@@ -11,14 +11,14 @@ import datetime
 #the following information for each user of each scheme:
 
 
-#The userid.
+#The userID.
 # The password scheme (Text21 or Image21).
 # The number of logins, successful logins, and failed logins.
 # The time taken to enter a password, recorded separately for successful logins, and
 #for failed logins.
 
 #Documentation for your log data processing software, including high-level
-#explanation and pseudocode for your approach, and the documented source code. Also
+#explanation and pseudo-code for your approach, and the documented source code. Also
 #provide the resulting data in CSV format
 
 
@@ -35,20 +35,17 @@ myFileImage = csv.reader(myCSVFileImage)
 myFileText = csv.reader(myCSVFileText)
 
 
-#Create new csv file and make it appendable
+#Create new output csv file
 #other options: w = overwrite, r = read, a = append, ab = append binary.
 csvFileOut = open(newFileName,'w')
-
-
 outFile = csv.writer(csvFileOut)
-
 
 
 #Header for new file
 header=['userID', 'SCHEME', '# of Logins', '# of Success', '# of Failure', 'Average Login Time', 'Average Login Success Time', 'Average Login Failure Time']
 
 
-
+# any login times which exceeds this threshold are an out-lier and will not be taken into calculations 
 threshold = datetime.timedelta( 
 	days=0,
      seconds=0,
@@ -60,7 +57,7 @@ threshold = datetime.timedelta(
  )
 
 
-
+# round time objects to seconds 
 def roundToSeconds(delta):
 	if(datetime.timedelta(microseconds=delta.microseconds) >= datetime.timedelta(microseconds=500000)):
 		return delta - datetime.timedelta(microseconds=delta.microseconds) + datetime.timedelta(seconds=1)
@@ -68,15 +65,16 @@ def roundToSeconds(delta):
 		return delta - datetime.timedelta(microseconds=delta.microseconds)
 
 
-
+# scrape data from file and store into a dictionary 
 def fileToDict(myFile):
 	list={}
 	number_of_login_success = 0
 	number_of_login_failure = 0
-	#Loop over csv rows
+
+	#Loop over csv file rows
 	for row in myFile:
 		split = row.split(",")
-		#print(split[0])
+		
 		if(list.get(split[1]) == None):
 			date_time_obj = datetime.datetime.strptime(split[0], '%Y-%m-%d %H:%M:%S')
 			data = [date_time_obj,split[1],split[3],split[4],split[5],split[6]]
@@ -92,17 +90,9 @@ def fileToDict(myFile):
 
 
 
-
-
-
-
-
-
 def algorithm(list):
-	 
 
-
-
+	#  loop through users in a dictionary 
 	for x in list:
 		row = []
 		number_of_login_success = 0
@@ -111,7 +101,6 @@ def algorithm(list):
 		Avg_login_time_success = datetime.timedelta()
 		Avg_login_time_failure = datetime.timedelta()
 		divisors = 0
-
 
 		row.append(x)
 		row.append(list.get(x)[0][2])
@@ -129,7 +118,7 @@ def algorithm(list):
 						Avg_login_time_success = Avg_login_time_success + (list.get(x)[k][0] - list.get(x)[currIndex][0])	
 						allLogins.append((list.get(x)[k][0] - list.get(x)[currIndex][0]))
 						successes.append((list.get(x)[k][0] - list.get(x)[currIndex][0]))
-				else:
+				else: # failed attempt
 					number_of_login_failure = number_of_login_failure + 1
 					currIndex = k - 1 # back track counter
 					# iterate backwards to find a matching 'start' time-stamp for a failure attempt
@@ -163,18 +152,19 @@ def algorithm(list):
 
 
 
-		
-
-
+# get data from file and store into a dictionary, Key = userID  ---> Value = list containing all of that user's logs
 imageData=fileToDict(myCSVFileImage)
 textData=fileToDict(myCSVFileText)
 
-
+# write the header to file 
 outFile.writerow(header)
+
+#numbers of users in Text Scheme
 numberOfUsersText = 0;
 for b in textData:
 	numberOfUsersText = numberOfUsersText + 1
 
+# calculate statistics for text scheme 
 allLogins = []
 successes = []
 failures = []
@@ -192,32 +182,33 @@ totalLoginTimeAllUsersText = datetime.timedelta()
 for q in allLoginsText:
 	totalLoginTimeAllUsersText = totalLoginTimeAllUsersText + q
 avgLoginTimeAllUsersText = totalLoginTimeAllUsersText / (len(allLoginsText))
-print(avgLoginTimeAllUsersText)
+
 # Avg success time of all users -> text
 totalSuccessTimeAllUsersText = datetime.timedelta()
 for r in successesText:
 	totalSuccessTimeAllUsersText = totalSuccessTimeAllUsersText + r
 avgSuccessTimeAllUsersText = totalSuccessTimeAllUsersText / (len(successesText))
-print(avgSuccessTimeAllUsersText)
+
 # Avg failure time of all users -> text
 totalFailureTimeAllUsersText = datetime.timedelta()
 for s in failuresText:
 	totalFailureTimeAllUsersText = totalFailureTimeAllUsersText + s
 avgFailureTimeAllUsersText = totalFailureTimeAllUsersText / (len(failuresText))
-print(avgFailureTimeAllUsersText)
-print()
 
 
+# write 'average' row
 outFile.writerow(["Average: ","testtextrandom",len(allLoginsText)/numberOfUsersText, len(successesText)/numberOfUsersText, 
 				 len(failuresText)/(numberOfUsersText-8),roundToSeconds(avgLoginTimeAllUsersText),
 				 roundToSeconds(avgSuccessTimeAllUsersText),roundToSeconds(avgFailureTimeAllUsersText)])
 outFile.writerow([" "," "," "," "," "," "," "," "])
 
 
+#numbers of users in Image Scheme
 numberOfUsersImage = 0
 for c in imageData:
 	numberOfUsersImage = numberOfUsersImage + 1
 
+# calculate statistics for image scheme 
 allLogins = []
 successes = []
 failures = []
@@ -235,32 +226,26 @@ totalLoginTimeAllUsersImage = datetime.timedelta()
 for t in allLoginsImage:
 	totalLoginTimeAllUsersImage = totalLoginTimeAllUsersImage + t
 avgLoginTimeAllUsersImage = totalLoginTimeAllUsersImage / (len(allLoginsImage))
-print(avgLoginTimeAllUsersImage)
+
 # Avg success time of all users -> Image
 totalSuccessTimeAllUsersImage = datetime.timedelta()
 for u in successesImage:
 	totalSuccessTimeAllUsersImage = totalSuccessTimeAllUsersImage + u
 avgSuccessTimeAllUsersImage = totalSuccessTimeAllUsersImage / (len(successesImage))
-print(avgSuccessTimeAllUsersImage)
+
 # Avg failure time of all users -> Image
 totalFailureTimeAllUsersImage = datetime.timedelta()
 for v in failuresImage:
 	totalFailureTimeAllUsersImage = totalFailureTimeAllUsersImage + v
 avgFailureTimeAllUsersImage = totalFailureTimeAllUsersImage / (len(failuresImage))
-print(avgFailureTimeAllUsersImage)
-print()
 
+# write 'average' row
 outFile.writerow(["Average: ","testpasstiles",len(allLoginsImage)/numberOfUsersImage, len(successesImage)/numberOfUsersImage, 
 				 len(failuresImage)/(numberOfUsersImage-2),roundToSeconds(avgLoginTimeAllUsersImage),
 				 roundToSeconds(avgSuccessTimeAllUsersImage),roundToSeconds(avgFailureTimeAllUsersImage)])
 outFile.writerow([" "," "," "," "," "," "," "," "])
 
-outFile.writerow([""])
-outFile.writerow([])
-outFile.writerow([])
 
-
-print(len(failuresText)/(numberOfUsersText-8))
 
 
 
