@@ -197,11 +197,12 @@ avgFailureTimeAllUsersText = totalFailureTimeAllUsersText / (len(failuresText))
 
 
 # write 'average' row
-outFile.writerow(["Average: ","testtextrandom",len(allLoginsText)/numberOfUsersText, len(successesText)/numberOfUsersText, 
+outFile.writerow([" ||||| "," ||||| "," ||||| "," ||||| "," ||||| "," ||||| "," ||||| "," ||||| "])
+outFile.writerow(["Mean: ","testtextrandom",len(allLoginsText)/numberOfUsersText, len(successesText)/numberOfUsersText, 
 				 len(failuresText)/(numberOfUsersText-8),roundToSeconds(avgLoginTimeAllUsersText),
 				 roundToSeconds(avgSuccessTimeAllUsersText),roundToSeconds(avgFailureTimeAllUsersText)])
 outFile.writerow([" "," "," "," "," "," "," "," "])
-
+outFile.writerow([" "," "," "," "," "," "," "," "])
 
 #numbers of users in Image Scheme
 numberOfUsersImage = 0
@@ -240,11 +241,12 @@ for v in failuresImage:
 avgFailureTimeAllUsersImage = totalFailureTimeAllUsersImage / (len(failuresImage))
 
 # write 'average' row
-outFile.writerow(["Average: ","testpasstiles",len(allLoginsImage)/numberOfUsersImage, len(successesImage)/numberOfUsersImage, 
+outFile.writerow([" ||||| "," ||||| "," ||||| "," ||||| "," ||||| "," ||||| "," ||||| "," ||||| "])
+outFile.writerow(["Mean: ","testpasstiles",len(allLoginsImage)/numberOfUsersImage, len(successesImage)/numberOfUsersImage, 
 				 len(failuresImage)/(numberOfUsersImage-2),roundToSeconds(avgLoginTimeAllUsersImage),
 				 roundToSeconds(avgSuccessTimeAllUsersImage),roundToSeconds(avgFailureTimeAllUsersImage)])
 outFile.writerow([" "," "," "," "," "," "," "," "])
-
+outFile.writerow([" "," "," "," "," "," "," "," "])
 
 
 
