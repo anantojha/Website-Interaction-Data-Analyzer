@@ -1,5 +1,6 @@
 import csv
 import datetime
+import numpy as np 
 ##### Interaction CSV Data Reader #####
 
 #INSTRUCTIONS:
@@ -47,6 +48,16 @@ header=['userID', 'SCHEME', '# of Logins', '# of Success', '# of Failure', 'Aver
 
 # any login times which exceeds this threshold are an out-lier and will not be taken into calculations 
 threshold = datetime.timedelta( 
+	days=0,
+     seconds=0,
+     microseconds=0,
+     milliseconds=0,
+     minutes=10,
+     hours=0,
+     weeks=0
+ )
+
+NullTime = datetime.timedelta( 
 	days=0,
      seconds=0,
      microseconds=0,
@@ -139,6 +150,9 @@ def algorithm(list):
 		#if(number_of_login_failure > 0):
 			#print("Average failure time: " + str(roundToSeconds(Avg_login_time_failure/number_of_login_failure)))
 		#print("----------------------------------")
+		numberOfLoginsPerUser.append(number_of_login_success + number_of_login_failure)
+		numberOfSuccessesPerUser.append(number_of_login_success)
+		numberOfFailuresPerUser.append(number_of_login_failure)
 		row.append(number_of_login_success + number_of_login_failure)
 		row.append(number_of_login_success)
 		row.append(number_of_login_failure)
@@ -169,10 +183,16 @@ allLogins = []
 successes = []
 failures = []
 rows = []
+numberOfLoginsPerUser = []
+numberOfSuccessesPerUser = []
+numberOfFailuresPerUser = []
 textDataFormatted = algorithm(textData)
 allLoginsText = allLogins
 successesText = successes
 failuresText = failures
+numberOfLoginsText = numberOfLoginsPerUser
+numberOfSuccessesText = numberOfSuccessesPerUser
+numberOfFailuresText = numberOfFailuresPerUser
 textRows = rows
 for j in textRows:
 	outFile.writerow(j)
@@ -195,14 +215,30 @@ for s in failuresText:
 	totalFailureTimeAllUsersText = totalFailureTimeAllUsersText + s
 avgFailureTimeAllUsersText = totalFailureTimeAllUsersText / (len(failuresText))
 
+allLoginsText.sort()
+allLoginsTextSeconds = []
+for o in allLoginsText:
+	allLoginsTextSeconds.append(o.total_seconds())
+successesText.sort()
+successesTextSeconds = []
+for i in successesText:
+	successesTextSeconds.append(i.total_seconds())
+failuresText.sort()
+failuresTextSeconds = []
+for v in failuresText:
+	failuresTextSeconds.append(v.total_seconds())
+numberOfLoginsText.sort()
+numberOfSuccessesText.sort()
+numberOfFailuresText.sort()
 
-# write 'average' row
-outFile.writerow([" ||||| "," ||||| "," ||||| "," ||||| "," ||||| "," ||||| "," ||||| "," ||||| "])
-outFile.writerow(["Mean: ","testtextrandom",len(allLoginsText)/numberOfUsersText, len(successesText)/numberOfUsersText, 
-				 len(failuresText)/(numberOfUsersText-8),roundToSeconds(avgLoginTimeAllUsersText),
-				 roundToSeconds(avgSuccessTimeAllUsersText),roundToSeconds(avgFailureTimeAllUsersText)])
-outFile.writerow([" "," "," "," "," "," "," "," "])
-outFile.writerow([" "," "," "," "," "," "," "," "])
+
+print(numberOfFailuresText)
+countZeros = 0
+for f in numberOfFailuresText:
+	if(f == 0):
+		countZeros = 1 + countZeros
+del numberOfFailuresText[:countZeros]
+
 
 #numbers of users in Image Scheme
 numberOfUsersImage = 0
@@ -214,10 +250,16 @@ allLogins = []
 successes = []
 failures = []
 rows = []
+numberOfLoginsPerUser = []
+numberOfSuccessesPerUser = []
+numberOfFailuresPerUser = []
 imageDataFormatted = algorithm(imageData)
 allLoginsImage = allLogins
 successesImage = successes
 failuresImage = failures
+numberOfLoginsImage = numberOfLoginsPerUser
+numberOfSuccessesImage = numberOfSuccessesPerUser
+numberOfFailuresImage = numberOfFailuresPerUser
 imageRows = rows
 for j in imageRows:
 	outFile.writerow(j)
@@ -240,14 +282,88 @@ for v in failuresImage:
 	totalFailureTimeAllUsersImage = totalFailureTimeAllUsersImage + v
 avgFailureTimeAllUsersImage = totalFailureTimeAllUsersImage / (len(failuresImage))
 
+allLoginsImage.sort()
+allLoginsImageSeconds = []
+for n in allLoginsImage:
+	allLoginsImageSeconds.append(n.total_seconds())
+successesImage.sort()
+successesImageSeconds = []
+for u in successesImage:
+	successesImageSeconds.append(u.total_seconds())
+failuresImage.sort()
+failuresImageSeconds = []
+for l in failuresImage:
+	failuresImageSeconds.append(l.total_seconds())
+numberOfLoginsImage.sort()
+numberOfSuccessesImage.sort()
+numberOfFailuresImage.sort()
 # write 'average' row
-outFile.writerow([" ||||| "," ||||| "," ||||| "," ||||| "," ||||| "," ||||| "," ||||| "," ||||| "])
-outFile.writerow(["Mean: ","testpasstiles",len(allLoginsImage)/numberOfUsersImage, len(successesImage)/numberOfUsersImage, 
-				 len(failuresImage)/(numberOfUsersImage-2),roundToSeconds(avgLoginTimeAllUsersImage),
-				 roundToSeconds(avgSuccessTimeAllUsersImage),roundToSeconds(avgFailureTimeAllUsersImage)])
-outFile.writerow([" "," "," "," "," "," "," "," "])
-outFile.writerow([" "," "," "," "," "," "," "," "])
+outFile.writerow([" "])
+outFile.writerow([" "])
+outFile.writerow(["All Users: "])
+outFile.writerow([" ||||| "," "," "," "," ","All logins", "All successes", "All Failures"])
 
+outFile.writerow(["Median: ","testtextrandom", numberOfLoginsText[len(numberOfLoginsText)/2],
+				 numberOfSuccessesText[len(numberOfSuccessesText)/2], numberOfFailuresText[len(numberOfFailuresText)/2], 
+				 allLoginsText[(len(allLoginsText)/2)], successesText[len(successesText)/2], failuresText[len(failuresText)/2]])
+outFile.writerow(["Median: ","testpasstiles", numberOfLoginsImage[len(numberOfLoginsImage)/2] ,
+				 numberOfSuccessesImage[len(numberOfSuccessesImage)/2], numberOfFailuresImage[len(numberOfFailuresImage)/2], 
+				 allLoginsImage[(len(allLoginsImage)/2)], successesImage[len(successesImage)/2], failuresImage[len(failuresImage)/2]])
+outFile.writerow([" ||||| "])
+outFile.writerow(["Mean: ","testtextrandom",(len(allLoginsText) + numberOfUsersText // 2) // numberOfUsersText, 
+				 (len(successesText) + numberOfUsersText // 2) // numberOfUsersText, (len(failuresText) + (numberOfUsersText) // 2) // (numberOfUsersText), 
+				 roundToSeconds(avgLoginTimeAllUsersText), roundToSeconds(avgSuccessTimeAllUsersText), roundToSeconds(avgFailureTimeAllUsersText)])
+outFile.writerow(["Mean: ","testpasstiles",(len(allLoginsImage) + numberOfUsersImage // 2) // numberOfUsersImage, 
+				 (len(successesImage) + numberOfUsersImage // 2) // numberOfUsersImage, (len(failuresImage) + (numberOfUsersImage) // 2) // (numberOfUsersImage),
+				 roundToSeconds(avgLoginTimeAllUsersImage), roundToSeconds(avgSuccessTimeAllUsersImage),roundToSeconds(avgFailureTimeAllUsersImage)])
+outFile.writerow([" ||||| "])
+outFile.writerow(["SD: ","testtextrandom", round(np.std(numberOfLoginsText),2), round(np.std(numberOfSuccessesText),2), round(np.std(numberOfFailuresText),2), 
+				 roundToSeconds(datetime.timedelta( days=0,
+													seconds=round(np.std(allLoginsTextSeconds),2),
+													microseconds=0,
+													milliseconds=0,
+													minutes=0,
+													hours=0,
+													weeks=0)),
+				 roundToSeconds(datetime.timedelta( days=0,
+												    seconds=round(np.std(successesTextSeconds),2),
+												    microseconds=0,
+												    milliseconds=0,
+												    minutes=0,
+												    hours=0,
+												    weeks=0)),
+				 roundToSeconds(datetime.timedelta( days=0,
+												   seconds=round(np.std(failuresTextSeconds),2),
+												    microseconds=0,
+												    milliseconds=0,
+												    minutes=0,
+												    hours=0,
+												    weeks=0))])																																											 
+outFile.writerow(["SD: ","testpasstiles", round(np.std(numberOfLoginsImage),2), round(np.std(numberOfSuccessesImage),2), round(np.std(numberOfFailuresImage),2), 
+				 roundToSeconds(datetime.timedelta( days=0,
+												    seconds=round(np.std(allLoginsImageSeconds),2),
+												    microseconds=0,
+												    milliseconds=0,
+												    minutes=0,
+												    hours=0,
+												    weeks=0)),
+				 roundToSeconds(datetime.timedelta( days=0,
+												    seconds=round(np.std(successesImageSeconds),2),
+												    microseconds=0,
+												    milliseconds=0,
+												    minutes=0,
+												    hours=0,
+											     	weeks=0)), 
+				roundToSeconds(datetime.timedelta(  days=0,
+												    seconds=round(np.std(failuresImageSeconds),2),
+												    microseconds=0,
+												    milliseconds=0,
+												    minutes=0,
+												    hours=0,
+											        weeks=0))])
+outFile.writerow([" "])
+outFile.writerow([" "])
+print()
 
 
 
