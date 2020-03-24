@@ -1,0 +1,41 @@
+userID,SCHEME,# of Logins,# of Success,# of Failure,Average Login Time,Average Login Success Time,Average Login Failure Time
+ast103,testtextrandom,17,16,1,0:00:13,0:00:12,0:00:18
+ast114,testtextrandom,22,15,7,0:00:11,0:00:11,0:00:10
+ast116,testtextrandom,15,15,0,0:00:06,0:00:06,0
+ast107,testtextrandom,21,15,6,0:00:06,0:00:05,0:00:07
+ast111,testtextrandom,20,12,8,0:00:16,0:00:21,0:00:09
+ast105,testtextrandom,15,12,3,0:00:07,0:00:07,0:00:08
+ast104,testtextrandom,26,16,10,0:00:13,0:00:12,0:00:14
+ast136,testtextrandom,15,15,0,0:00:10,0:00:10,0
+ast108,testtextrandom,19,19,0,0:00:04,0:00:04,0
+ast118,testtextrandom,16,15,1,0:00:08,0:00:08,0:00:09
+ast138,testtextrandom,16,16,0,0:00:16,0:00:16,0
+ast115,testtextrandom,15,15,0,0:00:11,0:00:11,0
+ast133,testtextrandom,9,9,0,0:00:15,0:00:15,0
+ast131,testtextrandom,21,15,6,0:00:15,0:00:12,0:00:23
+ast125,testtextrandom,18,15,3,0:00:06,0:00:06,0:00:06
+ast112,testtextrandom,15,15,0,0:00:08,0:00:08,0
+ast134,testtextrandom,15,15,0,0:00:08,0:00:08,0
+ast135,testtextrandom,4,3,1,0:00:07,0:00:07,0:00:05
+Average: ,testtextrandom,16,14,4,0:00:10,0:00:10,0:00:12
+ , , , , , , , 
+ipt113,testpasstiles,29,17,12,0:00:10,0:00:11,0:00:09
+ipt110,testpasstiles,19,15,4,0:00:18,0:00:12,0:00:42
+ipt131,testpasstiles,15,12,3,0:00:39,0:00:37,0:00:46
+ipt145,testpasstiles,16,15,1,0:00:25,0:00:25,0:00:34
+ipt119,testpasstiles,18,16,2,0:00:14,0:00:14,0:00:09
+ipt143,testpasstiles,18,15,3,0:00:13,0:00:12,0:00:16
+ipt109,testpasstiles,15,15,0,0:00:23,0:00:23,0
+ipt133,testpasstiles,16,15,1,0:00:13,0:00:14,0:00:06
+ipt134,testpasstiles,20,15,5,0:00:27,0:00:21,0:00:46
+ipt101,testpasstiles,32,16,16,0:00:20,0:00:11,0:00:28
+ipt137,testpasstiles,20,16,4,0:00:20,0:00:20,0:00:22
+ipt136,testpasstiles,18,15,3,0:00:13,0:00:12,0:00:17
+ipt104,testpasstiles,12,12,0,0:00:22,0:00:22,0
+ipt105,testpasstiles,22,15,7,0:00:11,0:00:09,0:00:15
+ipt106,testpasstiles,21,15,6,0:00:11,0:00:11,0:00:10
+Average: ,testpasstiles,19,14,5,0:00:18,0:00:17,0:00:22
+ , , , , , , , 
+""
+
+
