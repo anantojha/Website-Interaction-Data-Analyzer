@@ -1,6 +1,8 @@
 import csv
 import datetime
 import numpy as np 
+import matplotlib.pyplot as plt
+
 #from itertools import zip_longest
 ##### Interaction CSV Data Reader #####
 
@@ -366,35 +368,35 @@ outFile.writerow([" "])
 outFile.writerow([" "])
 outFile.writerow([" ", " " , " ", " ", "HISTOGRAM &", " ", " ", " "])
 outFile.writerow([" ", " " , " ", " ", "BOXPLOT DATA", " ", " ", " "])
-outFile.writerow([" ","testtextrandom","testtextrandom","testtextrandom"," ","testpasstiles","testpasstiles","testpasstiles"])
-outFile.writerow([" ","All Login Time","All Success Time","All Failure Time"," ","All Login Time","All Success Time","All Failure Time"])
+outFile.writerow([" ","testtextrandom","testtextrandom","testtextrandom","  ","testpasstiles","testpasstiles","testpasstiles"])
+outFile.writerow([" ","All Login Times (s)","All Success Times (s)","All Failure Times (s)"," ","All Login Times (s)","All Success Times (s)","All Failure Times (s)"])
 
-maxLength = max(len(allLoginsText),len(successesText),len(failuresText),len(allLoginsImage),len(successesImage),len(failuresImage))
+maxLength = max(len(allLoginsTextSeconds),len(successesTextSeconds),len(failuresTextSeconds),len(allLoginsImageSeconds),len(successesImageSeconds),len(failuresImageSeconds))
 for a in range(0,maxLength):
 	row = [" "]
-	if(a < len(allLoginsText)):
-		row.append(allLoginsText[a])
+	if(a < len(allLoginsTextSeconds)):
+		row.append(round(allLoginsTextSeconds[a]))
 	else:
 		row.append(" ")
-	if(a < len(successesText)):
-		row.append(successesText[a])
+	if(a < len(successesTextSeconds)):
+		row.append(round(successesTextSeconds[a]))
 	else:
 		row.append(" ")
-	if(a < len(failuresText)):
-		row.append(failuresText[a])
+	if(a < len(failuresTextSeconds)):
+		row.append(round(failuresTextSeconds[a]))
 	else:	
 		row.append(" ")
 	row.append(" ")
-	if(a < len(allLoginsImage)):
-		row.append(allLoginsImage[a])
+	if(a < len(allLoginsImageSeconds)):
+		row.append(round(allLoginsImageSeconds[a]))
 	else:
 		row.append(" ")
-	if(a < len(successesImage)):
-		row.append(successesImage[a])
+	if(a < len(successesImageSeconds)):
+		row.append(round(successesImageSeconds[a]))
 	else:
 		row.append(" ")
-	if(a < len(failuresImage)):
-		row.append(failuresImage[a])
+	if(a < len(failuresImageSeconds)):
+		row.append(round(failuresImageSeconds[a]))
 	else:	
 		row.append(" ")
 	outFile.writerow(row)
@@ -404,6 +406,47 @@ for a in range(0,maxLength):
 print(" ")
 print("Output.csv file has been created in Project Directory!")
 print(" ")
+
+plt.style.use('_classic_test')
+plt.hist(allLoginsTextSeconds, bins=[0, 5, 10, 15, 20, 25, 30],alpha=0.5)
+plt.gca().set(title='Histogram: All Login Times Text Scheme', ylabel='Frequency', xlabel='Seconds');
+plt.savefig("allLoginsTextHist.png")
+
+plt.clf()
+
+plt.style.use('_classic_test')
+plt.hist(successesTextSeconds, bins=[0, 5, 10, 15, 20, 25, 30],alpha=0.5)
+plt.gca().set(title='Histogram: All Success Times Text Scheme', ylabel='Frequency', xlabel='Seconds');
+plt.savefig("successesTextHist.png")
+
+plt.clf()
+
+plt.style.use('_classic_test')
+plt.hist(failuresTextSeconds, bins=[0, 5, 10, 15, 20, 25, 30],alpha=0.5)
+plt.gca().set(title='Histogram: All Failure Times Text Scheme', ylabel='Frequency', xlabel='Seconds');
+plt.savefig("failuresTextHist.png")
+
+
+plt.clf()
+
+plt.style.use('_classic_test')
+plt.hist(allLoginsImageSeconds, bins=[0, 5, 10, 15, 20, 25, 30, 35, 40],alpha=1)
+plt.gca().set(title='Histogram: All Login Times Image Scheme', ylabel='Frequency', xlabel='Seconds');
+plt.savefig("allLoginsImageHist.png")
+
+plt.clf()
+
+plt.style.use('_classic_test')
+plt.hist(successesImageSeconds, bins=[0, 5, 10, 15, 20, 25, 30, 35, 40],alpha=1)
+plt.gca().set(title='Histogram: All Success Times Image Scheme', ylabel='Frequency', xlabel='Seconds');
+plt.savefig("successesImageHist.png")
+
+plt.clf()
+
+plt.style.use('_classic_test')
+plt.hist(failuresImageSeconds, bins=[0, 5, 10, 15, 20, 25, 30, 35],alpha=1)
+plt.gca().set(title='Histogram: All Failure Times Image Scheme', ylabel='Frequency', xlabel='Seconds');
+plt.savefig("failuresImageHist.png")
 
 
 #####CLOSE THE DOCUMENTS####
