@@ -1,6 +1,7 @@
 import csv
 import datetime
 import numpy as np 
+#from itertools import zip_longest
 ##### Interaction CSV Data Reader #####
 
 #INSTRUCTIONS:
@@ -232,7 +233,6 @@ numberOfSuccessesText.sort()
 numberOfFailuresText.sort()
 
 
-print(numberOfFailuresText)
 countZeros = 0
 for f in numberOfFailuresText:
 	if(f == 0):
@@ -363,8 +363,47 @@ outFile.writerow(["SD: ","testpasstiles", round(np.std(numberOfLoginsImage),2), 
 											        weeks=0))])
 outFile.writerow([" "])
 outFile.writerow([" "])
-print()
+outFile.writerow([" "])
+outFile.writerow([" ", " " , " ", " ", "HISTOGRAM &", " ", " ", " "])
+outFile.writerow([" ", " " , " ", " ", "BOXPLOT DATA", " ", " ", " "])
+outFile.writerow([" ","testtextrandom","testtextrandom","testtextrandom"," ","testpasstiles","testpasstiles","testpasstiles"])
+outFile.writerow([" ","All Login Time","All Success Time","All Failure Time"," ","All Login Time","All Success Time","All Failure Time"])
 
+maxLength = max(len(allLoginsText),len(successesText),len(failuresText),len(allLoginsImage),len(successesImage),len(failuresImage))
+for a in range(0,maxLength):
+	row = [" "]
+	if(a < len(allLoginsText)):
+		row.append(allLoginsText[a])
+	else:
+		row.append(" ")
+	if(a < len(successesText)):
+		row.append(successesText[a])
+	else:
+		row.append(" ")
+	if(a < len(failuresText)):
+		row.append(failuresText[a])
+	else:	
+		row.append(" ")
+	row.append(" ")
+	if(a < len(allLoginsImage)):
+		row.append(allLoginsImage[a])
+	else:
+		row.append(" ")
+	if(a < len(successesImage)):
+		row.append(successesImage[a])
+	else:
+		row.append(" ")
+	if(a < len(failuresImage)):
+		row.append(failuresImage[a])
+	else:	
+		row.append(" ")
+	outFile.writerow(row)
+
+
+
+print(" ")
+print("Output.csv file has been created in Project Directory!")
+print(" ")
 
 
 #####CLOSE THE DOCUMENTS####
