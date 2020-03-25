@@ -303,7 +303,7 @@ numberOfFailuresImage.sort()
 # write 'average' row
 outFile.writerow([" "," "," "," "," "," "," "," "])
 outFile.writerow([" "," "," "," "," "," "," "," "])
-outFile.writerow(["All Users: "])
+outFile.writerow(["All Users: "," "," "," "," "," "," "," "])
 outFile.writerow([" ||||| "," "," "," "," ","All logins", "All successes", "All Failures"])
 
 outFile.writerow(["Median: ","testtextrandom", numberOfLoginsText[len(numberOfLoginsText)/2],
