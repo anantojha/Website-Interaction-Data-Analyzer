@@ -410,21 +410,21 @@ print(" ")
 plt.style.use('_classic_test')
 plt.hist(allLoginsTextSeconds, bins=[0, 5, 10, 15, 20, 25, 30],alpha=0.5)
 plt.gca().set(title='Histogram: All Login Times Text Scheme', ylabel='Frequency', xlabel='Seconds');
-plt.savefig("Graphs/allLoginsTextHist.png")
+plt.savefig("Graphs/TextHistogramAllLogins.png")
 
 plt.clf()
 
 plt.style.use('_classic_test')
 plt.hist(successesTextSeconds, bins=[0, 5, 10, 15, 20, 25, 30],alpha=0.5)
 plt.gca().set(title='Histogram: All Success Times Text Scheme', ylabel='Frequency', xlabel='Seconds');
-plt.savefig("Graphs/successesTextHist.png")
+plt.savefig("Graphs/TextHistogramSuccesses.png")
 
 plt.clf()
 
 plt.style.use('_classic_test')
 plt.hist(failuresTextSeconds, bins=[0, 5, 10, 15, 20, 25, 30],alpha=0.5)
 plt.gca().set(title='Histogram: All Failure Times Text Scheme', ylabel='Frequency', xlabel='Seconds');
-plt.savefig("Graphs/failuresTextHist.png")
+plt.savefig("Graphs/TextHistogramFailures.png")
 
 
 plt.clf()
@@ -432,22 +432,30 @@ plt.clf()
 plt.style.use('_classic_test')
 plt.hist(allLoginsImageSeconds, bins=[0, 5, 10, 15, 20, 25, 30, 35, 40],alpha=1)
 plt.gca().set(title='Histogram: All Login Times Image Scheme', ylabel='Frequency', xlabel='Seconds');
-plt.savefig("Graphs/allLoginsImageHist.png")
+plt.savefig("Graphs/ImageHistogramAllLogins.png")
 
 plt.clf()
 
 plt.style.use('_classic_test')
 plt.hist(successesImageSeconds, bins=[0, 5, 10, 15, 20, 25, 30, 35, 40],alpha=1)
 plt.gca().set(title='Histogram: All Success Times Image Scheme', ylabel='Frequency', xlabel='Seconds');
-plt.savefig("Graphs/successesImageHist.png")
+plt.savefig("Graphs/ImageHistogramSuccesses.png")
 
 plt.clf()
 
 plt.style.use('_classic_test')
 plt.hist(failuresImageSeconds, bins=[0, 5, 10, 15, 20, 25, 30, 35],alpha=1)
 plt.gca().set(title='Histogram: All Failure Times Image Scheme', ylabel='Frequency', xlabel='Seconds');
-plt.savefig("Graphs/failuresImageHist.png")
+plt.savefig("Graphs/ImageHistogramFailures.png")
 
+
+print(" ")
+print("Histograms have been created in /Graphs !")
+print(" ")
+
+print(" ")
+print("Boxplots have been created in /Graphs !")
+print(" ")
 
 #####CLOSE THE DOCUMENTS####
 myCSVFileImage.close()
