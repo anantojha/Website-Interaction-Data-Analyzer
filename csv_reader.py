@@ -301,8 +301,8 @@ numberOfLoginsImage.sort()
 numberOfSuccessesImage.sort()
 numberOfFailuresImage.sort()
 # write 'average' row
-outFile.writerow([" "," "," "," "," "," "," "," "])
-outFile.writerow([" "," "," "," "," "," "," "," "])
+outFile.writerow([" "," "," "," "," "," "," "," "," "])
+outFile.writerow([" "," "," "," "," "," "," "," "," "])
 outFile.writerow(["All Users: "," "," "," "," "," "," "," "])
 outFile.writerow([" ||||| "," "," "," "," ","All logins", "All successes", "All Failures"])
 
@@ -364,9 +364,9 @@ outFile.writerow(["SD: ","testpasstiles", round(np.std(numberOfLoginsImage),2), 
 												    minutes=0,
 												    hours=0,
 											        weeks=0))])
-outFile.writerow([" "," "," "," "," "," "," "," "])
-outFile.writerow([" "," "," "," "," "," "," "," "])
-outFile.writerow([" "," "," "," "," "," "," "," "])
+outFile.writerow([" "," "," "," "," "," "," "," "," "])
+outFile.writerow([" "," "," "," "," "," "," "," "," "])
+outFile.writerow([" "," "," "," "," "," "," "," "," "])
 outFile.writerow([" ", " " , " ", " ", "HISTOGRAM &", " ", " ", " "])
 outFile.writerow([" ", " " , " ", " ", "BOXPLOT DATA", " ", " ", " "])
 outFile.writerow([" ","testtextrandom","testtextrandom","testtextrandom","  ","testpasstiles","testpasstiles","testpasstiles"])
