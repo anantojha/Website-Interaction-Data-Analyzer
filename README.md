@@ -9,10 +9,10 @@ Install Dependicies:
 
 -> make sure you have numPy(1.16.6) installed (if not, enter command 'pip install numpy==1.16.6') \
 
--> make sure you have matplotlib(2.2.5) installed (if not, enter command 'pip install matplotlib==2.2.5') \
+-> make sure you have matplotlib(2.2.5) installed (if not, enter command 'pip install matplotlib==2.2.5') 
 
 
 Running Instructions:
 
 -> navigate to project directory using command line \
--> enter 'python2 csv_reader.py' \
+-> enter 'python2 csv_reader.py' 
