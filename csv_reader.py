@@ -218,7 +218,7 @@ for s in failuresText:
 	totalFailureTimeAllUsersText = totalFailureTimeAllUsersText + s
 avgFailureTimeAllUsersText = totalFailureTimeAllUsersText / (len(failuresText))
 
-
+# sort and convert time object to seconds in order to calculate standard deviation 
 allLoginsText.sort()
 allLoginsTextSeconds = []
 for o in allLoginsText:
@@ -231,6 +231,10 @@ failuresText.sort()
 failuresTextSeconds = []
 for v in failuresText:
 	failuresTextSeconds.append(v.total_seconds())
+
+
+
+
 numberOfLoginsText.sort()
 numberOfSuccessesText.sort()
 numberOfFailuresText.sort()
@@ -301,10 +305,10 @@ numberOfLoginsImage.sort()
 numberOfSuccessesImage.sort()
 numberOfFailuresImage.sort()
 # write 'average' row
-outFile.writerow([" "," "," "," "," "," "," "," "," "])
-outFile.writerow([" "," "," "," "," "," "," "," "," "])
-outFile.writerow(["All Users: "," "," "," "," "," "," "," "])
-outFile.writerow([" ||||| "," "," "," "," ","All logins", "All successes", "All Failures"])
+outFile.writerow([" _ "," _ "," _ "," _ "," _ "," _ "," _ "," _ "])
+outFile.writerow([" _ "," _ "," _ "," _ "," _ "," _ "," _ "," _ "])
+outFile.writerow(["All Users: "," _ "," _ "," _ "," _ "," _ "," _ "," _ "])
+outFile.writerow([" ||||| "," _ "," _ "," _ "," _ ","All logins", "All successes", "All Failures"])
 
 outFile.writerow(["Median: ","testtextrandom", numberOfLoginsText[len(numberOfLoginsText)/2],
 				 numberOfSuccessesText[len(numberOfSuccessesText)/2], numberOfFailuresText[len(numberOfFailuresText)/2], 
@@ -321,28 +325,13 @@ outFile.writerow(["Mean: ","testpasstiles",(len(allLoginsImage) + numberOfUsersI
 				 roundToSeconds(avgLoginTimeAllUsersImage), roundToSeconds(avgSuccessTimeAllUsersImage),roundToSeconds(avgFailureTimeAllUsersImage)])
 outFile.writerow([" ||||| "])
 outFile.writerow(["SD: ","testtextrandom", round(np.std(numberOfLoginsText),2), round(np.std(numberOfSuccessesText),2), round(np.std(numberOfFailuresText),2), 
-				 roundToSeconds(datetime.timedelta( days=0,
+				 roundToSeconds(datetime.timedelta(
 													seconds=round(np.std(allLoginsTextSeconds),2),
-													microseconds=0,
-													milliseconds=0,
-													minutes=0,
-													hours=0,
-													weeks=0)),
-				 roundToSeconds(datetime.timedelta( days=0,
-												    seconds=round(np.std(successesTextSeconds),2),
-												    microseconds=0,
-												    milliseconds=0,
-												    minutes=0,
-												    hours=0,
-												    weeks=0)),
-				 roundToSeconds(datetime.timedelta( days=0,
-												   seconds=round(np.std(failuresTextSeconds),2),
-												    microseconds=0,
-												    milliseconds=0,
-												    minutes=0,
-												    hours=0,
-												    weeks=0))])																																											 
-outFile.writerow(["SD: ","testpasstiles", round(np.std(numberOfLoginsImage),2), round(np.std(numberOfSuccessesImage),2), round(np.std(numberOfFailuresImage),2), 
+													)),
+				 roundToSeconds(datetime.timedelta(seconds=round(np.std(successesTextSeconds),2))),
+				 roundToSeconds(datetime.timedelta( 
+												   seconds=round(np.std(failuresTextSeconds),2)))])																																											 
+				 outFile.writerow(["SD: ","testpasstiles", round(np.std(numberOfLoginsImage),2), round(np.std(numberOfSuccessesImage),2), round(np.std(numberOfFailuresImage),2), 
 				 roundToSeconds(datetime.timedelta( days=0,
 												    seconds=round(np.std(allLoginsImageSeconds),2),
 												    microseconds=0,
@@ -364,13 +353,13 @@ outFile.writerow(["SD: ","testpasstiles", round(np.std(numberOfLoginsImage),2), 
 												    minutes=0,
 												    hours=0,
 											        weeks=0))])
-outFile.writerow([" "," "," "," "," "," "," "," "," "])
-outFile.writerow([" "," "," "," "," "," "," "," "," "])
-outFile.writerow([" "," "," "," "," "," "," "," "," "])
-outFile.writerow([" ", " " , " ", " ", "HISTOGRAM &", " ", " ", " "])
-outFile.writerow([" ", " " , " ", " ", "BOXPLOT DATA", " ", " ", " "])
-outFile.writerow([" ","testtextrandom","testtextrandom","testtextrandom","  ","testpasstiles","testpasstiles","testpasstiles"])
-outFile.writerow([" ","All Login Times (s)","All Success Times (s)","All Failure Times (s)"," ","All Login Times (s)","All Success Times (s)","All Failure Times (s)"])
+outFile.writerow([" _ "," _ "," _ "," _ "," _ "," _ "," _ "," _ "])
+outFile.writerow([" _ "," _ "," _ "," _ "," _ "," _ "," _ "," _ "])
+outFile.writerow([" _ "," _ "," _ "," _ "," _ "," _ "," _ "," _ "])
+outFile.writerow([" _ ", " _ " , " _ ", " _ ", "HISTOGRAM &", " _ ", " _ ", " _ "])
+outFile.writerow([" _ ", " _ " , " _ ", " _ ", "BOXPLOT DATA", " _ ", " _ ", " _ "])
+outFile.writerow([" _ ","testtextrandom","testtextrandom","testtextrandom"," _ ","testpasstiles","testpasstiles","testpasstiles"])
+outFile.writerow([" _ ","All Login Times (s)","All Success Times (s)","All Failure Times (s)"," ","All Login Times (s)","All Success Times (s)","All Failure Times (s)"])
 
 maxLength = max(len(allLoginsTextSeconds),len(successesTextSeconds),len(failuresTextSeconds),len(allLoginsImageSeconds),len(successesImageSeconds),len(failuresImageSeconds))
 for a in range(0,maxLength):
