@@ -1,8 +1,7 @@
 var mystring ="";
-var symbols ="";
 var trackstr = ["","",""];
-var tracksym = ["","",""];
 var count = 0;
+var alarm = 0;
 
 if(localStorage.getItem("count")==null){
     localStorage.setItem("count", 0);
@@ -12,63 +11,55 @@ if(localStorage.getItem("str")==null){
     localStorage.setItem("str", JSON.stringify(["","",""]));
 }
 
-if(localStorage.getItem("sym")==null){
-    localStorage.setItem("sym", JSON.stringify(["","",""]));
+function correct(){
+    for(let i = 0; i < 7; i++){
+        if (mystring[i] == "q")
+            document.write('&#8593');
+        else if (mystring[i] == "w")
+            document.write('&#8593');
+        else if (mystring[i] == "e")
+            document.write('&#8599');
+        else if (mystring[i] == "a")
+            document.write('&#8592');
+        else if (mystring[i] == "d")
+            document.write('&#8594');
+        else if (mystring[i] == "z")
+            document.write('&#8601');
+        else if (mystring[i] == "x")
+            document.write('&#8595');
+        else if (mystring[i] == "c")
+            document.write('&#8600');
+    }
 }
 
 function random(){
     count = localStorage.getItem("counting");
     for(let i = 0;i<7;i++){
         var temp = Math.floor(Math.random() * 8) + 1;
-        if (temp == 1){
+        if (temp == 1)
             mystring += "w";
-            symbols += "↑";
-        }
-
-        else if (temp == 2){
+        else if (temp == 2)
             mystring += "q";
-            symbols += "↖";;
-        }
-        else if (temp == 3){
+        else if (temp == 3)
             mystring += "e";
-            symbols += "↗"
-        }
-        else if (temp == 4){
+        else if (temp == 4)
             mystring += "a";
-            symbols += "←";
-        }
-        else if (temp == 5){
+        else if (temp == 5)
             mystring += "d";
-            symbols += "→";
-        }
-        else if (temp == 6){
+        else if (temp == 6)
             mystring += "z";
-            symbols += "↙";
-        }
-        else if (temp == 7){
+        else if (temp == 7)
             mystring += "x";
-            symbols += "↓";
-        }
-        else if (temp == 8){
+        else if (temp == 8)
             mystring += "c";
-            symbols += "↘";
-        }
-        
     }
     var temp = JSON.parse(localStorage.getItem("str"));
-    var temp2 = JSON.parse(localStorage.getItem("sym"));
-    tracksym [localStorage.getItem("count")] = symbols;
     trackstr[localStorage.getItem("count")] = mystring;
     for(let i = 0; i < 3; i++){
-        if(trackstr[i] == ""){
-            trackstr[i] = temp[i];
-        }
-        if(tracksym[i] == ""){
-            tracksym[i] = temp2[i];
-        }
+        if(trackstr[i] == "")
+            trackstr[i] = temp[i];   
     }
     localStorage.setItem("str", JSON.stringify(trackstr));
-    localStorage.setItem("sym", JSON.stringify(tracksym));
 
 }
 
@@ -96,6 +87,20 @@ function opened(){
     console.log("test");
 }
 
+function setup(){
+    /*document.getElementById("email1").disabled = true;
+    document.getElementById("email2").disabled = true;
+    document.getElementById("email3").disabled = true;
+    document.getElementById("email4").disabled = true;
+    document.getElementById("bank1").disabled = true;
+    document.getElementById("bank2").disabled = true;
+    document.getElementById("bank3").disabled = true;
+    document.getElementById("bank4").disabled = true;
+    document.getElementById("shop1").disabled = true;
+    document.getElementById("shop2").disabled = true;
+    document.getElementById("shop3").disabled = true;
+    document.getElementById("shop4").disabled = true;*/
+}
 
 if (performance.navigation.type == 1) {
     localStorage.clear();
