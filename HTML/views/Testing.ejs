@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Testing</title>
+    <script>
+        function send(x, y, z){
+            let date = new Date();
+            let dstr = date.getFullYear()+"-"+(date.getMonth()+1)+"-"+date.getDate() + " "+date.getHours()+":"+
+            date.getMinutes()+":"+date.getSeconds();
+            if(localStorage.getItem("hold") == null) {
+                localStorage.setItem("hold", JSON.stringify([])); 
+            }
+            if (z=="") z = navigator.userAgent;
+            let rest = JSON.stringify([dstr, localStorage.getItem('user'), "directpass","directrandom", "qweadzxc", x,
+            y, z]);
+            const options = {
+                method: 'POST',
+                headers: {
+                    "Content-type": "application/JSON"
+                },
+                body: rest
+            };
+            fetch('/data', options)
+        }
+        function check(){
+            var temp = localStorage.getItem("str2");
+            send('enter', 'passwordSubmitted', 'pwN:'+temp)
+            if(temp == document.getElementById("in").value){
+                send('login','success',temp);
+                alert("You got it right");
+            }
+            else{
+                send('login','failure',temp);
+                alert("You got it wrong");
+            }
+            window.close();
+        }
+    </script>
+</head>
+<body>
+    <h4>
+        <script>
+            document.write("q w e<br>");
+            document.write('&#8598; &#8593; &#8599; <br>');
+            document.write("a d<br>");
+            document.write("&#8592; &#8594;<br>");
+            document.write("z x c<br>");
+            document.write("&#8601; &#8595; &#8600;");
+
+        </script>
+    </h4>
+    <br>
+    <input id ="in" placeholder="Enter password">
+    <button onclick = "send('enter','passwordSubmitted','pwN:'+localStorage.getItem('str2')); check()" id = "test">Done</button>
+</body>
+</html>
