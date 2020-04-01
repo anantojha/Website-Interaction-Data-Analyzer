@@ -8,24 +8,29 @@
             check() - Checks if you ented the password right or wrong and then closes the browser
         */
         function send(x, y, z){
-            let date = new Date();
-            let dstr = date.getFullYear()+"-"+(date.getMonth()+1)+"-"+date.getDate() + " "+date.getHours()+":"+
-            date.getMinutes()+":"+date.getSeconds();
-            if(localStorage.getItem("hold") == null) {
-                localStorage.setItem("hold", JSON.stringify([])); 
-            }
-            if (z=="") z = navigator.userAgent;
-            let rest = JSON.stringify([dstr, localStorage.getItem('user'), "directpass","directrandom", "qweadzxc", x,
-            y, z]);
-            const options = {
-                method: 'POST',
-                headers: {
-                    "Content-type": "application/JSON"
-                },
-                body: rest
-            };
-            fetch('/data', options)
+        let date = new Date();
+        let dstr = date.getFullYear()+"-"+(date.getMonth()+1)+"-"+date.getDate() + " "+date.getHours()+":"+
+        date.getMinutes()+":"+date.getSeconds();
+        if(localStorage.getItem("hold") == null) {
+            localStorage.setItem("hold", JSON.stringify([])); 
         }
+        if (z=="") 
+        {
+            z = navigator.userAgent;
+            z = JSON.stringify(z);
+        }
+        let rest = JSON.stringify([dstr, localStorage.getItem('user'), "directpass","directrandom", "qweadzxc", x,
+        y, z]);
+    
+        const options = {
+            method: 'POST',
+            headers: {
+                "Content-type": "application/JSON"
+            },
+            body: rest
+        };
+        fetch('/data', options)
+    }
         function check(){
             var temp = localStorage.getItem("str2");
             send('enter', 'passwordSubmitted', 'pwN:'+temp)
