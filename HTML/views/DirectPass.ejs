@@ -191,9 +191,14 @@
         if(localStorage.getItem("hold") == null) {
             localStorage.setItem("hold", JSON.stringify([])); 
         }
-        if (z=="") z = navigator.userAgent;
+        if (z=="") 
+        {
+            z = navigator.userAgent;
+            z = JSON.stringify(z);
+        }
         let rest = JSON.stringify([dstr, localStorage.getItem('user'), "directpass","directrandom", "qweadzxc", x,
         y, z]);
+    
         const options = {
             method: 'POST',
             headers: {
