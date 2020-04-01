@@ -1,3 +1,4 @@
+import sys
 import csv
 import datetime
 import numpy as np 
@@ -25,33 +26,9 @@ import matplotlib.pyplot as plt
 #explanation and pseudo-code for your approach, and the documented source code. Also
 #provide the resulting data in CSV format
 
-
-#DOCUMENTS to read and write
-fileNameImage = 'imagept21.csv'
-fileNameText = 'text21.csv'
-newFileName = 'Output.csv'
-
-
-#Open input csv file
-myCSVFileImage = open(fileNameImage, 'rb')
-myCSVFileText = open(fileNameText, 'rb')
-myFileImage = csv.reader(myCSVFileImage)
-myFileText = csv.reader(myCSVFileText)
-
-
-#Create new output csv file
-#other options: w = overwrite, r = read, a = append, ab = append binary.
-csvFileOut = open(newFileName,'w')
-outFile = csv.writer(csvFileOut)
-
-
-#Header for new file
-header=['userID', 'SCHEME', '# of Logins', '# of Success', '# of Failure', 'Average Login Time', 'Average Login Success Time', 'Average Login Failure Time']
-
-
 # any login times which exceeds this threshold are an out-lier and will not be taken into calculations 
 threshold = datetime.timedelta( 
-	days=0,
+	 days=0,
      seconds=0,
      microseconds=0,
      milliseconds=0,
@@ -60,15 +37,27 @@ threshold = datetime.timedelta(
      weeks=0
  )
 
-NullTime = datetime.timedelta( 
-	days=0,
-     seconds=0,
-     microseconds=0,
-     milliseconds=0,
-     minutes=10,
-     hours=0,
-     weeks=0
- )
+
+
+def getAverageTimes(logins):
+	totalLoginTimeAllUsers = datetime.timedelta()
+	for q in logins:
+		totalLoginTimeAllUsers = totalLoginTimeAllUsers + q
+	return totalLoginTimeAllUsers / (len(logins))
+
+
+
+def getInSeconds(logins, seconds):
+	for o in logins:
+		seconds.append(o.total_seconds())
+
+
+
+def numberOfUsers(data):
+	count = 0
+	for b in data:
+		count = count + 1
+	return count
 
 
 # round time objects to seconds 
@@ -104,7 +93,7 @@ def fileToDict(myFile):
 
 
 
-def algorithm(list):
+def algorithm(list, rows, allLogins, successes, failures, numberOfLoginsPerUser, numberOfSuccessesPerUser, numberOfFailuresPerUser):
 
 	#  loop through users in a dictionary 
 	for x in list:
@@ -144,15 +133,7 @@ def algorithm(list):
 						allLogins.append((list.get(x)[k][0] - list.get(x)[currIndex][0])) 
 						failures.append((list.get(x)[k][0] - list.get(x)[currIndex][0]))
 		Avg_login_time = (Avg_login_time_success + Avg_login_time_failure)/(number_of_login_success + number_of_login_failure)
-		#print(list.get(x)[1][1])
-		#print("number of logins: " + str(number_of_login_success + number_of_login_failure))
-		#print("number of success: " + str(number_of_login_success))
-		#print("number of failure: " + str(number_of_login_failure))
-		#print("Average login time: " + str(roundToSeconds(Avg_login_time)))
-		#print("Average success time: " + str(roundToSeconds(Avg_login_time_success/number_of_login_success)))
-		#if(number_of_login_failure > 0):
-			#print("Average failure time: " + str(roundToSeconds(Avg_login_time_failure/number_of_login_failure)))
-		#print("----------------------------------")
+		
 		numberOfLoginsPerUser.append(number_of_login_success + number_of_login_failure)
 		numberOfSuccessesPerUser.append(number_of_login_success)
 		numberOfFailuresPerUser.append(number_of_login_failure)
@@ -166,289 +147,395 @@ def algorithm(list):
 		else:
 			row.append(0)
 		rows.append(row)
+		#print(list.get(x)[1][1])
+		#print("number of logins: " + str(number_of_login_success + number_of_login_failure))
+		#print("number of success: " + str(number_of_login_success))
+		#print("number of failure: " + str(number_of_login_failure))
+		#print("Average login time: " + str(roundToSeconds(Avg_login_time)))
+		#print("Average success time: " + str(roundToSeconds(Avg_login_time_success/number_of_login_success)))
+		#if(number_of_login_failure > 0):
+			#print("Average failure time: " + str(roundToSeconds(Avg_login_time_failure/number_of_login_failure)))
+		#print("----------------------------------")
 
 
 
-# get data from file and store into a dictionary, Key = userID  ---> Value = list containing all of that user's logs
-imageData=fileToDict(myCSVFileImage)
-textData=fileToDict(myCSVFileText)
-
-# write the header to file 
-outFile.writerow(header)
-
-#numbers of users in Text Scheme
-numberOfUsersText = 0;
-for b in textData:
-	numberOfUsersText = numberOfUsersText + 1
-
-# calculate statistics for text scheme 
-allLogins = []
-successes = []
-failures = []
-rows = []
-numberOfLoginsPerUser = []
-numberOfSuccessesPerUser = []
-numberOfFailuresPerUser = []
-textDataFormatted = algorithm(textData)
-allLoginsText = allLogins
-successesText = successes
-failuresText = failures
-numberOfLoginsText = numberOfLoginsPerUser
-numberOfSuccessesText = numberOfSuccessesPerUser
-numberOfFailuresText = numberOfFailuresPerUser
-textRows = rows
-for j in textRows:
-	outFile.writerow(j)
-
-# Avg login time of all users -> text
-totalLoginTimeAllUsersText = datetime.timedelta()
-for q in allLoginsText:
-	totalLoginTimeAllUsersText = totalLoginTimeAllUsersText + q
-avgLoginTimeAllUsersText = totalLoginTimeAllUsersText / (len(allLoginsText))
-
-# Avg success time of all users -> text
-totalSuccessTimeAllUsersText = datetime.timedelta()
-for r in successesText:
-	totalSuccessTimeAllUsersText = totalSuccessTimeAllUsersText + r
-avgSuccessTimeAllUsersText = totalSuccessTimeAllUsersText / (len(successesText))
-
-# Avg failure time of all users -> text
-totalFailureTimeAllUsersText = datetime.timedelta()
-for s in failuresText:
-	totalFailureTimeAllUsersText = totalFailureTimeAllUsersText + s
-avgFailureTimeAllUsersText = totalFailureTimeAllUsersText / (len(failuresText))
-
-# sort and convert time object to seconds in order to calculate standard deviation 
-allLoginsText.sort()
-allLoginsTextSeconds = []
-for o in allLoginsText:
-	allLoginsTextSeconds.append(o.total_seconds())
-successesText.sort()
-successesTextSeconds = []
-for i in successesText:
-	successesTextSeconds.append(i.total_seconds())
-failuresText.sort()
-failuresTextSeconds = []
-for v in failuresText:
-	failuresTextSeconds.append(v.total_seconds())
+def makeHistogram(logins, bins_array, alpha_val, title_str, y, x, name):
+	plt.style.use('_classic_test')
+	plt.hist(logins, bins=bins_array,alpha=alpha_val)
+	plt.gca().set(title=title_str, ylabel=y, xlabel=x)
+	plt.savefig(name)
+	plt.clf()
 
 
 
-
-numberOfLoginsText.sort()
-numberOfSuccessesText.sort()
-numberOfFailuresText.sort()
-
-
-countZeros = 0
-for f in numberOfFailuresText:
-	if(f == 0):
-		countZeros = 1 + countZeros
-del numberOfFailuresText[:countZeros]
+def doPartA():
+	fileNameImage = 'imagept21.csv'
+	fileNameText = 'text21.csv'
+	newFileName = 'Output_Part_A.csv'
+	#Open input csv file
+	myCSVFileImage = open(fileNameImage, 'rb')
+	myCSVFileText = open(fileNameText, 'rb')
+	myFileImage = csv.reader(myCSVFileImage)
+	myFileText = csv.reader(myCSVFileText)
 
 
-#numbers of users in Image Scheme
-numberOfUsersImage = 0
-for c in imageData:
-	numberOfUsersImage = numberOfUsersImage + 1
+	#Create new output csv file
+	#other options: w = overwrite, r = read, a = append, ab = append binary.
+	csvFileOut = open(newFileName,'w')
+	outFile = csv.writer(csvFileOut)
 
-# calculate statistics for image scheme 
-allLogins = []
-successes = []
-failures = []
-rows = []
-numberOfLoginsPerUser = []
-numberOfSuccessesPerUser = []
-numberOfFailuresPerUser = []
-imageDataFormatted = algorithm(imageData)
-allLoginsImage = allLogins
-successesImage = successes
-failuresImage = failures
-numberOfLoginsImage = numberOfLoginsPerUser
-numberOfSuccessesImage = numberOfSuccessesPerUser
-numberOfFailuresImage = numberOfFailuresPerUser
-imageRows = rows
-for j in imageRows:
-	outFile.writerow(j)
 
-# Avg login time of all users -> Image
-totalLoginTimeAllUsersImage = datetime.timedelta()
-for t in allLoginsImage:
-	totalLoginTimeAllUsersImage = totalLoginTimeAllUsersImage + t
-avgLoginTimeAllUsersImage = totalLoginTimeAllUsersImage / (len(allLoginsImage))
+	#Header for new file
+	header=['userID', 'SCHEME', '# of Logins', '# of Success', '# of Failure', 'Average Login Time', 'Average Login Success Time', 'Average Login Failure Time']
 
-# Avg success time of all users -> Image
-totalSuccessTimeAllUsersImage = datetime.timedelta()
-for u in successesImage:
-	totalSuccessTimeAllUsersImage = totalSuccessTimeAllUsersImage + u
-avgSuccessTimeAllUsersImage = totalSuccessTimeAllUsersImage / (len(successesImage))
+	# get data from file and store into a dictionary, Key = userID  ---> Value = list containing all of that user's logs
+	imageData=fileToDict(myCSVFileImage)
+	textData=fileToDict(myCSVFileText)
 
-# Avg failure time of all users -> Image
-totalFailureTimeAllUsersImage = datetime.timedelta()
-for v in failuresImage:
-	totalFailureTimeAllUsersImage = totalFailureTimeAllUsersImage + v
-avgFailureTimeAllUsersImage = totalFailureTimeAllUsersImage / (len(failuresImage))
+	# write the header to file 
+	outFile.writerow(header)
+	textRows = []
+	imageRows = []
 
-allLoginsImage.sort()
-allLoginsImageSeconds = []
-for n in allLoginsImage:
-	allLoginsImageSeconds.append(n.total_seconds())
-successesImage.sort()
-successesImageSeconds = []
-for u in successesImage:
-	successesImageSeconds.append(u.total_seconds())
-failuresImage.sort()
-failuresImageSeconds = []
-for l in failuresImage:
-	failuresImageSeconds.append(l.total_seconds())
-numberOfLoginsImage.sort()
-numberOfSuccessesImage.sort()
-numberOfFailuresImage.sort()
-# write 'average' row
-outFile.writerow([" _ "," _ "," _ "," _ "," _ "," _ "," _ "," _ "])
-outFile.writerow([" _ "," _ "," _ "," _ "," _ "," _ "," _ "," _ "])
-outFile.writerow(["All Users: "," _ "," _ "," _ "," _ "," _ "," _ "," _ "])
-outFile.writerow([" ||||| "," _ "," _ "," _ "," _ ","All logins", "All successes", "All Failures"])
+	#numbers of users in each Scheme
+	numberOfUsersText = numberOfUsers(textData);
+	numberOfUsersImage = numberOfUsers(imageData)
 
-outFile.writerow(["Median: ","testtextrandom", numberOfLoginsText[len(numberOfLoginsText)/2],
-				 numberOfSuccessesText[len(numberOfSuccessesText)/2], numberOfFailuresText[len(numberOfFailuresText)/2], 
-				 allLoginsText[(len(allLoginsText)/2)], successesText[len(successesText)/2], failuresText[len(failuresText)/2]])
-outFile.writerow(["Median: ","testpasstiles", numberOfLoginsImage[len(numberOfLoginsImage)/2] ,
-				 numberOfSuccessesImage[len(numberOfSuccessesImage)/2], numberOfFailuresImage[len(numberOfFailuresImage)/2], 
-				 allLoginsImage[(len(allLoginsImage)/2)], successesImage[len(successesImage)/2], failuresImage[len(failuresImage)/2]])
-outFile.writerow([" ||||| "])
-outFile.writerow(["Mean: ","testtextrandom",(len(allLoginsText) + numberOfUsersText // 2) // numberOfUsersText, 
-				 (len(successesText) + numberOfUsersText // 2) // numberOfUsersText, (len(failuresText) + (numberOfUsersText) // 2) // (numberOfUsersText), 
-				 roundToSeconds(avgLoginTimeAllUsersText), roundToSeconds(avgSuccessTimeAllUsersText), roundToSeconds(avgFailureTimeAllUsersText)])
-outFile.writerow(["Mean: ","testpasstiles",(len(allLoginsImage) + numberOfUsersImage // 2) // numberOfUsersImage, 
-				 (len(successesImage) + numberOfUsersImage // 2) // numberOfUsersImage, (len(failuresImage) + (numberOfUsersImage) // 2) // (numberOfUsersImage),
-				 roundToSeconds(avgLoginTimeAllUsersImage), roundToSeconds(avgSuccessTimeAllUsersImage),roundToSeconds(avgFailureTimeAllUsersImage)])
-outFile.writerow([" ||||| "])
-outFile.writerow(["SD: ","testtextrandom", round(np.std(numberOfLoginsText),2), round(np.std(numberOfSuccessesText),2), round(np.std(numberOfFailuresText),2), 
-				 roundToSeconds(datetime.timedelta(
-													seconds=round(np.std(allLoginsTextSeconds),2),
-													)),
-				 roundToSeconds(datetime.timedelta(seconds=round(np.std(successesTextSeconds),2))),
-				 roundToSeconds(datetime.timedelta( 
-												   seconds=round(np.std(failuresTextSeconds),2)))])																																											 
-				 outFile.writerow(["SD: ","testpasstiles", round(np.std(numberOfLoginsImage),2), round(np.std(numberOfSuccessesImage),2), round(np.std(numberOfFailuresImage),2), 
-				 roundToSeconds(datetime.timedelta( days=0,
-												    seconds=round(np.std(allLoginsImageSeconds),2),
-												    microseconds=0,
-												    milliseconds=0,
-												    minutes=0,
-												    hours=0,
-												    weeks=0)),
-				 roundToSeconds(datetime.timedelta( days=0,
-												    seconds=round(np.std(successesImageSeconds),2),
-												    microseconds=0,
-												    milliseconds=0,
-												    minutes=0,
-												    hours=0,
-											     	weeks=0)), 
-				roundToSeconds(datetime.timedelta(  days=0,
-												    seconds=round(np.std(failuresImageSeconds),2),
-												    microseconds=0,
-												    milliseconds=0,
-												    minutes=0,
-												    hours=0,
-											        weeks=0))])
-outFile.writerow([" _ "," _ "," _ "," _ "," _ "," _ "," _ "," _ "])
-outFile.writerow([" _ "," _ "," _ "," _ "," _ "," _ "," _ "," _ "])
-outFile.writerow([" _ "," _ "," _ "," _ "," _ "," _ "," _ "," _ "])
-outFile.writerow([" _ ", " _ " , " _ ", " _ ", "HISTOGRAM &", " _ ", " _ ", " _ "])
-outFile.writerow([" _ ", " _ " , " _ ", " _ ", "BOXPLOT DATA", " _ ", " _ ", " _ "])
-outFile.writerow([" _ ","testtextrandom","testtextrandom","testtextrandom"," _ ","testpasstiles","testpasstiles","testpasstiles"])
-outFile.writerow([" _ ","All Login Times (s)","All Success Times (s)","All Failure Times (s)"," ","All Login Times (s)","All Success Times (s)","All Failure Times (s)"])
+	# calculate statistics for text scheme 
+	allLoginsText = []
+	successesText = []
+	failuresText = []
+	numberOfLoginsText = []
+	numberOfSuccessesText = []
+	numberOfFailuresText = []
+	textDataFormatted = algorithm(textData, textRows, allLoginsText, successesText, failuresText, numberOfLoginsText, numberOfSuccessesText, numberOfFailuresText)
 
-maxLength = max(len(allLoginsTextSeconds),len(successesTextSeconds),len(failuresTextSeconds),len(allLoginsImageSeconds),len(successesImageSeconds),len(failuresImageSeconds))
-for a in range(0,maxLength):
-	row = [" "]
-	if(a < len(allLoginsTextSeconds)):
-		row.append(round(allLoginsTextSeconds[a]))
+
+	allLoginsImage = []
+	successesImage = []
+	failuresImage = []
+	numberOfLoginsImage = []
+	numberOfSuccessesImage = []
+	numberOfFailuresImage = []
+	textDataFormatted = algorithm(imageData, imageRows, allLoginsImage, successesImage, failuresImage, numberOfLoginsImage, numberOfSuccessesImage, numberOfFailuresImage)
+
+
+	for j in textRows:
+		outFile.writerow(j)
+
+	for k in imageRows:
+		outFile.writerow(k)
+
+	# Avg login time of all users 
+	avgLoginTimeAllUsersText = getAverageTimes(allLoginsText)
+	avgLoginTimeAllUsersImage = getAverageTimes(allLoginsImage)
+	# Avg success time of all users 
+	avgSuccessTimeAllUsersText = getAverageTimes(successesText)
+	avgSuccessTimeAllUsersImage = getAverageTimes(successesImage)
+	# Avg failure time of all users 
+	avgFailureTimeAllUsersText = getAverageTimes(failuresText)
+	avgFailureTimeAllUsersImage = getAverageTimes(failuresImage)
+
+	# sort and convert time object to seconds in order to calculate standard deviation 
+	allLoginsText.sort()
+	allLoginsImage.sort()
+	allLoginsTextSeconds = []
+	allLoginsImageSeconds = []
+	getInSeconds(allLoginsText, allLoginsTextSeconds)
+	getInSeconds(allLoginsImage, allLoginsImageSeconds)
+
+
+	successesText.sort()
+	successesImage.sort()
+	successesTextSeconds = []
+	successesImageSeconds = []
+	getInSeconds(successesText, successesTextSeconds)
+	getInSeconds(successesImage, successesImageSeconds)
+
+
+	failuresText.sort()
+	failuresImage.sort()
+	failuresTextSeconds = []
+	failuresImageSeconds = []
+	getInSeconds(failuresText, failuresTextSeconds)
+	getInSeconds(failuresImage, failuresImageSeconds)
+
+
+	numberOfLoginsText.sort()
+	numberOfLoginsImage.sort()
+	numberOfSuccessesText.sort()
+	numberOfSuccessesImage.sort()
+	numberOfFailuresText.sort()
+	numberOfFailuresImage.sort()
+
+
+	countZeros = 0
+	for f in numberOfFailuresText:
+		if(f == 0):
+			countZeros = 1 + countZeros
+	del numberOfFailuresText[:countZeros]
+
+
+
+	# write 'average' row
+	outFile.writerow([" _ "," _ "," _ "," _ "," _ "," _ "," _ "," _ "])
+	outFile.writerow([" _ "," _ "," _ "," _ "," _ "," _ "," _ "," _ "])
+	outFile.writerow(["All Users: "," _ "," _ "," _ "," _ "," _ "," _ "," _ "])
+	outFile.writerow([" ||||| "," _ "," _ "," _ "," _ ","All logins", "All successes", "All Failures"])
+
+
+	outFile.writerow(["Median: ","testtextrandom", numberOfLoginsText[len(numberOfLoginsText)/2],
+					 numberOfSuccessesText[len(numberOfSuccessesText)/2], numberOfFailuresText[len(numberOfFailuresText)/2], 
+					 allLoginsText[(len(allLoginsText)/2)], successesText[len(successesText)/2], failuresText[len(failuresText)/2]])
+	outFile.writerow(["Median: ","testpasstiles", numberOfLoginsImage[len(numberOfLoginsImage)/2] ,
+					 numberOfSuccessesImage[len(numberOfSuccessesImage)/2], numberOfFailuresImage[len(numberOfFailuresImage)/2], 
+					 allLoginsImage[(len(allLoginsImage)/2)], successesImage[len(successesImage)/2], failuresImage[len(failuresImage)/2]])
+
+
+	outFile.writerow([" ||||| "])
+
+
+	outFile.writerow(["Mean: ","testtextrandom",(len(allLoginsText) + numberOfUsersText // 2) // numberOfUsersText, 
+					 (len(successesText) + numberOfUsersText // 2) // numberOfUsersText, (len(failuresText) + (numberOfUsersText) // 2) // (numberOfUsersText), 
+					 roundToSeconds(avgLoginTimeAllUsersText), roundToSeconds(avgSuccessTimeAllUsersText), roundToSeconds(avgFailureTimeAllUsersText)])
+	outFile.writerow(["Mean: ","testpasstiles",(len(allLoginsImage) + numberOfUsersImage // 2) // numberOfUsersImage, 
+					 (len(successesImage) + numberOfUsersImage // 2) // numberOfUsersImage, (len(failuresImage) + (numberOfUsersImage) // 2) // (numberOfUsersImage),
+					 roundToSeconds(avgLoginTimeAllUsersImage), roundToSeconds(avgSuccessTimeAllUsersImage),roundToSeconds(avgFailureTimeAllUsersImage)])
+
+
+	outFile.writerow([" ||||| "])
+
+
+	outFile.writerow(["SD: ","testtextrandom", round(np.std(numberOfLoginsText),2), round(np.std(numberOfSuccessesText),2), round(np.std(numberOfFailuresText),2), 
+					 roundToSeconds(datetime.timedelta(seconds=round(np.std(allLoginsTextSeconds),2))),
+					 roundToSeconds(datetime.timedelta(seconds=round(np.std(successesTextSeconds),2))),
+					 roundToSeconds(datetime.timedelta(seconds=round(np.std(failuresTextSeconds),2)))])																																											 
+					 
+	outFile.writerow(["SD: ","testpasstiles", round(np.std(numberOfLoginsImage),2), round(np.std(numberOfSuccessesImage),2), round(np.std(numberOfFailuresImage),2),
+					 roundToSeconds(datetime.timedelta( seconds=round(np.std(allLoginsImageSeconds),2))),
+					 roundToSeconds(datetime.timedelta( seconds=round(np.std(successesImageSeconds),2))), 
+					 roundToSeconds(datetime.timedelta(  seconds=round(np.std(failuresImageSeconds),2)))])
+
+
+	outFile.writerow([" _ "," _ "," _ "," _ "," _ "," _ "," _ "," _ "])
+	outFile.writerow([" _ "," _ "," _ "," _ "," _ "," _ "," _ "," _ "])
+	outFile.writerow([" _ "," _ "," _ "," _ "," _ "," _ "," _ "," _ "])
+	outFile.writerow([" _ ", " _ " , " _ ", " _ ", "HISTOGRAM &", " _ ", " _ ", " _ "])
+	outFile.writerow([" _ ", " _ " , " _ ", " _ ", "BOXPLOT DATA", " _ ", " _ ", " _ "])
+	outFile.writerow([" _ ","testtextrandom","testtextrandom","testtextrandom"," _ ","testpasstiles","testpasstiles","testpasstiles"])
+	outFile.writerow([" _ ","All Login Times (s)","All Success Times (s)","All Failure Times (s)"," ","All Login Times (s)","All Success Times (s)","All Failure Times (s)"])
+
+
+
+	maxLength = max(len(allLoginsTextSeconds),len(successesTextSeconds),len(failuresTextSeconds),len(allLoginsImageSeconds),len(successesImageSeconds),len(failuresImageSeconds))
+	for a in range(0,maxLength):
+		row = [" "]
+		if(a < len(allLoginsTextSeconds)):
+			row.append(round(allLoginsTextSeconds[a]))
+		else:
+			row.append(" ")
+		if(a < len(successesTextSeconds)):
+			row.append(round(successesTextSeconds[a]))
+		else:
+			row.append(" ")
+		if(a < len(failuresTextSeconds)):
+			row.append(round(failuresTextSeconds[a]))
+		else:	
+			row.append(" ")
+		row.append(" ")
+		if(a < len(allLoginsImageSeconds)):
+			row.append(round(allLoginsImageSeconds[a]))
+		else:
+			row.append(" ")
+		if(a < len(successesImageSeconds)):
+			row.append(round(successesImageSeconds[a]))
+		else:
+			row.append(" ")
+		if(a < len(failuresImageSeconds)):
+			row.append(round(failuresImageSeconds[a]))
+		else:	
+			row.append(" ")
+		outFile.writerow(row)
+
+	print("")
+	print("Output_Part_A.csv file has been created in Project Directory!")
+	print("")
+	makeHistogram(allLoginsTextSeconds, [0, 5, 10, 15, 20, 25, 30], 0.5, 'Histogram: All Login Times Text Scheme', 'Frequency', 'Seconds', "Graphs/TextHistogramAllLogins.png")
+	makeHistogram(successesTextSeconds, [0, 5, 10, 15, 20, 25, 30], 0.5, 'Histogram: All Success Times Text Scheme', 'Frequency', 'Seconds', "Graphs/TextHistogramSuccesses.png")
+	makeHistogram(failuresTextSeconds, [0, 5, 10, 15, 20, 25, 30], 0.5, 'Histogram: All Failure Times Text Scheme', 'Frequency', 'Seconds', "Graphs/ImageHistogramAllLogins.png")
+	makeHistogram(allLoginsImageSeconds, [0, 5, 10, 15, 20, 25, 30, 35, 40], 1, 'Histogram: All Login Times Image Scheme', 'Frequency', 'Seconds', "Graphs/ImageHistogramAllLogins.png")
+	makeHistogram(successesImageSeconds, [0, 5, 10, 15, 20, 25, 30, 35, 40], 1, 'Histogram: All Success Times Image Scheme', 'Frequency', 'Seconds', "Graphs/ImageHistogramSuccesses.png")
+	makeHistogram(failuresImageSeconds, [0, 5, 10, 15, 20, 25, 30, 35], 1, 'Histogram: All Failure Times Image Scheme', 'Frequency', 'Seconds', "Graphs/ImageHistogramFailures.png")
+	print("")
+	print("Histograms have been created in /Graphs !")
+	print("")
+	print("")
+	print("Boxplots have been created in /Graphs !")
+	print("")
+
+	#####CLOSE THE DOCUMENTS####
+	myCSVFileImage.close()
+	myCSVFileText.close()
+	csvFileOut.close()
+
+
+
+
+
+def doPartB():
+	fileNameDirect = '/HTML/database.csv'
+	newFileName = 'Output_Part_B.csv'
+	#Open input csv file
+	myCSVFileDirect = open(fileNameDirect, 'rb')
+	myFileDirect = csv.reader(myCSVFileDirect)
+
+
+	#Create new output csv file
+	#other options: w = overwrite, r = read, a = append, ab = append binary.
+	csvFileOut = open(newFileName,'w')
+	outFile = csv.writer(csvFileOut)
+
+
+	#Header for new file
+	header=['userID', 'SCHEME', '# of Logins', '# of Success', '# of Failure', 'Average Login Time', 'Average Login Success Time', 'Average Login Failure Time']
+
+	# get data from file and store into a dictionary, Key = userID  ---> Value = list containing all of that user's logs
+	directData=fileToDict(myCSVFileDirect)
+
+	# write the header to file 
+	outFile.writerow(header)
+	directRows = []
+
+	numberOfUsersDirect = numberOfUsers(directData);
+	
+
+	# calculate statistics for Direct scheme 
+	allLoginsDirect = []
+	successesDirect = []
+	failuresDirect = []
+	numberOfLoginsDirect = []
+	numberOfSuccessesDirect = []
+	numberOfFailuresDirect = []
+	directDataFormatted = algorithm(directData, directRows, allLoginsDirect, successesDirect, failuresDirect, numberOfLoginsDirect, numberOfSuccessesDirect, numberOfFailuresDirect)
+
+	for p in directRows:
+		outFile.writerow(p)
+
+	# Avg login time of all users 
+	avgLoginTimeAllUsersDirect = getAverageTimes(allLoginsDirect)
+	# Avg success time of all users 
+	avgSuccessTimeAllUsersDirect = getAverageTimes(successesDirect)
+	# Avg failure time of all users 
+	avgFailureTimeAllUsersDirect = getAverageTimes(failuresDirect)
+
+
+	allLoginsDirect.sort()
+	allLoginsDirectSeconds = []
+	getInSeconds(allLoginsDirect, allLoginsDirectSeconds)
+	
+	successesDirect.sort()
+	successesDirectSeconds = []
+	getInSeconds(successesDirect, successesDirectSeconds)
+	
+	failuresDirect.sort()
+	failuresDirectSeconds = []
+	getInSeconds(failuresDirect, failuresDirectSeconds)
+	
+	numberOfLoginsDirect.sort()
+	numberOfSuccessesDirect.sort()
+	numberOfFailuresDirect.sort()
+
+
+
+	countZeros = 0
+	for f in numberOfFailuresDirect:
+		if(f == 0):
+			countZeros = 1 + countZeros
+	del numberOfFailuresDirect[:countZeros]
+
+
+	# write 'average' row
+	outFile.writerow([" _ "," _ "," _ "," _ "," _ "," _ "," _ "," _ "])
+	outFile.writerow([" _ "," _ "," _ "," _ "," _ "," _ "," _ "," _ "])
+	outFile.writerow(["All Users: "," _ "," _ "," _ "," _ "," _ "," _ "," _ "])
+	outFile.writerow([" ||||| "," _ "," _ "," _ "," _ ","All logins", "All successes", "All Failures"])
+
+
+	outFile.writerow(["Median: ","directrandom", numberOfLoginsDirect[len(numberOfLoginsDirect)/2],
+					 numberOfSuccessesDirect[len(numberOfSuccessesDirect)/2], numberOfFailuresDirect[len(numberOfFailuresDirect)/2], 
+					 allLoginsDirect[(len(allLoginsDirect)/2)], successesDirect[len(successesDirect)/2], failuresDirect[len(failuresDirect)/2]])
+
+	outFile.writerow([" ||||| "])
+
+
+	outFile.writerow(["Mean: ","directrandom",(len(allLoginsDirect) + numberOfUsersDirect // 2) // numberOfUsersDirect, 
+					 (len(successesDirect) + numberOfUsersDirect // 2) // numberOfUsersDirect, (len(failuresDirect) + (numberOfUsersDirect) // 2) // (numberOfUsersDirect), 
+					 roundToSeconds(avgLoginTimeAllUsersDirect), roundToSeconds(avgSuccessTimeAllUsersDirect), roundToSeconds(avgFailureTimeAllUsersDirect)])
+
+
+	outFile.writerow([" ||||| "])
+
+
+	outFile.writerow(["SD: ","directrandom", round(np.std(numberOfLoginsDirect),2), round(np.std(numberOfSuccessesDirect),2), round(np.std(numberOfFailuresDirect),2), 
+					 roundToSeconds(datetime.timedelta(seconds=round(np.std(allLoginsDirectSeconds),2))),
+					 roundToSeconds(datetime.timedelta(seconds=round(np.std(successesDirectSeconds),2))),
+					 roundToSeconds(datetime.timedelta(seconds=round(np.std(failuresDirectSeconds),2)))])	
+
+	outFile.writerow([" _ "," _ "," _ "," _ "," _ "," _ "," _ "," _ "])
+	outFile.writerow([" _ "," _ "," _ "," _ "," _ "," _ "," _ "," _ "])
+	outFile.writerow([" _ "," _ "," _ "," _ "," _ "," _ "," _ "," _ "])
+	outFile.writerow([" _ ", " _ " , " _ ", " _ ", "HISTOGRAM &", " _ ", " _ ", " _ "])
+	outFile.writerow([" _ ", " _ " , " _ ", " _ ", "BOXPLOT DATA", " _ ", " _ ", " _ "])
+	outFile.writerow([" _ ","directrandom","directrandom","directrandom"," _ "," _ "," _ "," _ "])
+	outFile.writerow([" _ ","All Login Times (s)","All Success Times (s)","All Failure Times (s)"," "," _ "," _ "," _ "])
+
+	maxLength = max(len(allLoginsDirectSeconds),len(successesDirectSeconds),len(failuresDirectSeconds))
+	for a in range(0,maxLength):
+		row = [" "]
+		if(a < len(allLoginsDirectSeconds)):
+			row.append(round(allLoginsDirectSeconds[a]))
+		else:
+			row.append(" ")
+		if(a < len(successesDirectSeconds)):
+			row.append(round(successesDirectSeconds[a]))
+		else:
+			row.append(" ")
+		if(a < len(failuresDirectSeconds)):
+			row.append(round(failuresDirectSeconds[a]))
+		else:	
+			row.append(" ")
+		row.append(" ")
+		outFile.writerow(row)
+
+	print("")
+	print("Output_Part_B.csv file has been created in Project Directory!")
+	print("")
+	#makeHistogram(allLoginsDirectSeconds, [0, 5, 10, 15, 20, 25, 30], 0.5, 'Histogram: All Login Times Direct Scheme', 'Frequency', 'Seconds', "Graphs/DirectHistogramAllLogins.png")
+	#makeHistogram(successesDirectSeconds, [0, 5, 10, 15, 20, 25, 30], 0.5, 'Histogram: All Success Times Direct Scheme', 'Frequency', 'Seconds', "Graphs/DirectHistogramSuccesses.png")
+	#makeHistogram(failuresDirectSeconds, [0, 5, 10, 15, 20, 25, 30], 0.5, 'Histogram: All Failure Times Direct Scheme', 'Frequency', 'Seconds', "Graphs/ImageHistogramAllLogins.png")
+	#print("")
+	#print("Histograms have been created in /Graphs !")
+	#print("")
+	#print("")
+	#print("Boxplots have been created in /Graphs !")
+	#print("")
+
+
+
+
+# which job? Part A = 1 or B = 2
+arguments = len(sys.argv) - 1
+
+if(arguments != 1):
+	print("incorrect # of arguments")
+	sys.exit()
+else:
+	if(sys.argv[1] == "1"):
+		print(sys.argv[1])
+		doPartA()
+	elif(sys.argv[1] == "2"):
+		print(sys.argv[1])
+		doPartB()
 	else:
-		row.append(" ")
-	if(a < len(successesTextSeconds)):
-		row.append(round(successesTextSeconds[a]))
-	else:
-		row.append(" ")
-	if(a < len(failuresTextSeconds)):
-		row.append(round(failuresTextSeconds[a]))
-	else:	
-		row.append(" ")
-	row.append(" ")
-	if(a < len(allLoginsImageSeconds)):
-		row.append(round(allLoginsImageSeconds[a]))
-	else:
-		row.append(" ")
-	if(a < len(successesImageSeconds)):
-		row.append(round(successesImageSeconds[a]))
-	else:
-		row.append(" ")
-	if(a < len(failuresImageSeconds)):
-		row.append(round(failuresImageSeconds[a]))
-	else:	
-		row.append(" ")
-	outFile.writerow(row)
-
-
-
-print(" ")
-print("Output.csv file has been created in Project Directory!")
-print(" ")
-
-plt.style.use('_classic_test')
-plt.hist(allLoginsTextSeconds, bins=[0, 5, 10, 15, 20, 25, 30],alpha=0.5)
-plt.gca().set(title='Histogram: All Login Times Text Scheme', ylabel='Frequency', xlabel='Seconds');
-plt.savefig("Graphs/TextHistogramAllLogins.png")
-
-plt.clf()
-
-plt.style.use('_classic_test')
-plt.hist(successesTextSeconds, bins=[0, 5, 10, 15, 20, 25, 30],alpha=0.5)
-plt.gca().set(title='Histogram: All Success Times Text Scheme', ylabel='Frequency', xlabel='Seconds');
-plt.savefig("Graphs/TextHistogramSuccesses.png")
-
-plt.clf()
-
-plt.style.use('_classic_test')
-plt.hist(failuresTextSeconds, bins=[0, 5, 10, 15, 20, 25, 30],alpha=0.5)
-plt.gca().set(title='Histogram: All Failure Times Text Scheme', ylabel='Frequency', xlabel='Seconds');
-plt.savefig("Graphs/TextHistogramFailures.png")
-
-
-plt.clf()
-
-plt.style.use('_classic_test')
-plt.hist(allLoginsImageSeconds, bins=[0, 5, 10, 15, 20, 25, 30, 35, 40],alpha=1)
-plt.gca().set(title='Histogram: All Login Times Image Scheme', ylabel='Frequency', xlabel='Seconds');
-plt.savefig("Graphs/ImageHistogramAllLogins.png")
-
-plt.clf()
-
-plt.style.use('_classic_test')
-plt.hist(successesImageSeconds, bins=[0, 5, 10, 15, 20, 25, 30, 35, 40],alpha=1)
-plt.gca().set(title='Histogram: All Success Times Image Scheme', ylabel='Frequency', xlabel='Seconds');
-plt.savefig("Graphs/ImageHistogramSuccesses.png")
-
-plt.clf()
-
-plt.style.use('_classic_test')
-plt.hist(failuresImageSeconds, bins=[0, 5, 10, 15, 20, 25, 30, 35],alpha=1)
-plt.gca().set(title='Histogram: All Failure Times Image Scheme', ylabel='Frequency', xlabel='Seconds');
-plt.savefig("Graphs/ImageHistogramFailures.png")
-
-
-print(" ")
-print("Histograms have been created in /Graphs !")
-print(" ")
-
-print(" ")
-print("Boxplots have been created in /Graphs !")
-print(" ")
-
-#####CLOSE THE DOCUMENTS####
-myCSVFileImage.close()
-myCSVFileText.close()
-csvFileOut.close()
-
+		print("incorrect argument")
+		sys.exit()
