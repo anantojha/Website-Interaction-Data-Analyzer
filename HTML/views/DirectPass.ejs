@@ -4,6 +4,22 @@
     <title>Document</title>
 </head>
 <script>
+    /*
+        show() - This function is used to display the the 3 attempts only in there random order
+        shuffle() - Shuffles the 3 attempts only
+        setup() - Determines at what point what buttons are clickable
+        opened() - Opens the Password.html and sends the data it needs
+        random() - randomizes the password
+        send() - Sends the information gotten from the users to the server to the csv
+        increase() - Keeps track of where you are in the program
+        first() - It displays when 3 attempts only for email is valid
+        second() - It displays when 3 attempts only for bank is valid
+        third() - It displays when 3 attempts only for shopping is valid
+        pass() - Opens up Testing.html and sends the important information through
+        submit() - Makes everything invalid when the user is complete
+        id() - Gets the current id for the user
+    */
+    
     var mystring =""; //Used for the randomizing of passwords
     var trackstr = ["","",""]; //Keeps track of all three passwords
     var order = [0,1,2]; //Tracks the order of the random password testing
