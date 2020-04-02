@@ -10,7 +10,7 @@ var express = require('express');
 var fs = require('fs');
 var id = 100;
 var app = express();
-
+app.use( express.static('public'));
 app.use(express.json());
 app.set('view engine','ejs');
 

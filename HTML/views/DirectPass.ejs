@@ -186,14 +186,25 @@
     }
     function send(x, y, z){
         let date = new Date();
-        let dstr = date.getFullYear()+"-"+(date.getMonth()+1)+"-"+date.getDate() + " "+date.getHours()+":"+
-        date.getMinutes()+":"+date.getSeconds();
+        let month = ((date.getMonth()+1) < 10 ? '0' : '') + (date.getMonth()+1);
+        let day = (date.getDay() < 10 ? '0' : '') + date.getDay();
+        let hour = (date.getHours() < 10 ? '0' : '') + date.getHours();
+        let min = (date.getMinutes() < 10 ? '0' : '') + date.getMinutes();
+        let sec = (date.getSeconds() < 10 ? '0' : '') + date.getSeconds();
+
+        let dstr = date.getFullYear()+"-"+month+"-"+day+ " "+hour+":"+
+        min+":"+sec;
         if(localStorage.getItem("hold") == null) {
             localStorage.setItem("hold", JSON.stringify([])); 
         }
-        if (z=="") z = navigator.userAgent;
+        if (z=="") 
+        {
+            z = navigator.userAgent;
+            z = JSON.stringify(z);
+        }
         let rest = JSON.stringify([dstr, localStorage.getItem('user'), "directpass","directrandom", "qweadzxc", x,
         y, z]);
+    
         const options = {
             method: 'POST',
             headers: {
