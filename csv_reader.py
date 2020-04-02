@@ -37,6 +37,17 @@ threshold = datetime.timedelta(
      weeks=0
  )
 
+def removeOutliers(list, value):
+	new = []
+	for x in list:
+		if(x <= value):
+			new.append(x)
+	return new
+
+
+
+
+
 
 
 def getAverageTimes(logins):
@@ -159,9 +170,10 @@ def algorithm(list, rows, allLogins, successes, failures, numberOfLoginsPerUser,
 
 
 
-def makeHistogram(logins, bins_array, alpha_val, title_str, y, x, name):
-	plt.style.use('_classic_test')
-	plt.hist(logins, bins=bins_array,alpha=alpha_val)
+def makeHistogram(logins, bins_array, alpha_val, title_str, y, x, name, style):
+
+	plt.style.use(style)
+	plt.hist(logins, bins=bins_array, alpha=alpha_val)
 	plt.gca().set(title=title_str, ylabel=y, xlabel=x)
 	plt.savefig(name)
 	plt.clf()
@@ -360,12 +372,19 @@ def doPartA():
 	print("")
 	print("Output_Part_A.csv file has been created in Project Directory!")
 	print("")
-	makeHistogram(allLoginsTextSeconds, [0, 5, 10, 15, 20, 25, 30], 0.5, 'Histogram: All Login Times Text Scheme', 'Frequency', 'Seconds', "Graphs/TextHistogramAllLogins.png")
-	makeHistogram(successesTextSeconds, [0, 5, 10, 15, 20, 25, 30], 0.5, 'Histogram: All Success Times Text Scheme', 'Frequency', 'Seconds', "Graphs/TextHistogramSuccesses.png")
-	makeHistogram(failuresTextSeconds, [0, 5, 10, 15, 20, 25, 30], 0.5, 'Histogram: All Failure Times Text Scheme', 'Frequency', 'Seconds', "Graphs/ImageHistogramAllLogins.png")
-	makeHistogram(allLoginsImageSeconds, [0, 5, 10, 15, 20, 25, 30, 35, 40], 1, 'Histogram: All Login Times Image Scheme', 'Frequency', 'Seconds', "Graphs/ImageHistogramAllLogins.png")
-	makeHistogram(successesImageSeconds, [0, 5, 10, 15, 20, 25, 30, 35, 40], 1, 'Histogram: All Success Times Image Scheme', 'Frequency', 'Seconds', "Graphs/ImageHistogramSuccesses.png")
-	makeHistogram(failuresImageSeconds, [0, 5, 10, 15, 20, 25, 30, 35], 1, 'Histogram: All Failure Times Image Scheme', 'Frequency', 'Seconds', "Graphs/ImageHistogramFailures.png")
+	t1 = removeOutliers(allLoginsTextSeconds, 25)
+	i1 = removeOutliers(allLoginsImageSeconds, 50)
+	t2 = removeOutliers(successesTextSeconds, 25)
+	i2 = removeOutliers(successesImageSeconds, 50)
+	t3 = removeOutliers(failuresTextSeconds, 15)
+	i3 = removeOutliers(failuresImageSeconds, 40)
+
+	makeHistogram(t1, 8, 1, 'All Login Times Text Scheme', 'Frequency', 'Seconds', "Graphs/TextHistogramAllLogins.png", 'ggplot')
+	makeHistogram(t2, 8, 1, 'All Success Times Text Scheme', 'Frequency', 'Seconds', "Graphs/TextHistogramSuccesses.png", 'ggplot')
+	makeHistogram(t3, 10, 1, 'All Failure Times Text Scheme', 'Frequency', 'Seconds', "Graphs/TextHistogramFailures.png", 'ggplot')
+	makeHistogram(i1, 10, 1, 'All Login Times Image Scheme', 'Frequency', 'Seconds', "Graphs/ImageHistogramAllLogins.png", 'bmh')
+	makeHistogram(i2, 10, 1, 'All Success Times Image Scheme', 'Frequency', 'Seconds', "Graphs/ImageHistogramSuccesses.png", 'bmh')
+	makeHistogram(i3, 10, 1, 'All Failure Times Image Scheme', 'Frequency', 'Seconds', "Graphs/ImageHistogramFailures.png", 'bmh')
 	print("")
 	print("Histograms have been created in /Graphs !")
 	print("")
@@ -445,14 +464,11 @@ def doPartB():
 	numberOfSuccessesDirect.sort()
 	numberOfFailuresDirect.sort()
 
-
-
 	countZeros = 0
 	for f in numberOfFailuresDirect:
 		if(f == 0):
 			countZeros = 1 + countZeros
 	del numberOfFailuresDirect[:countZeros]
-
 
 	# write 'average' row
 	outFile.writerow([" _ "," _ "," _ "," _ "," _ "," _ "," _ "," _ "])
@@ -510,15 +526,15 @@ def doPartB():
 	print("")
 	print("Output_Part_B.csv file has been created in Project Directory!")
 	print("")
-	#makeHistogram(allLoginsDirectSeconds, [0, 5, 10, 15, 20, 25, 30], 0.5, 'Histogram: All Login Times Direct Scheme', 'Frequency', 'Seconds', "Graphs/DirectHistogramAllLogins.png")
-	#makeHistogram(successesDirectSeconds, [0, 5, 10, 15, 20, 25, 30], 0.5, 'Histogram: All Success Times Direct Scheme', 'Frequency', 'Seconds', "Graphs/DirectHistogramSuccesses.png")
-	#makeHistogram(failuresDirectSeconds, [0, 5, 10, 15, 20, 25, 30], 0.5, 'Histogram: All Failure Times Direct Scheme', 'Frequency', 'Seconds', "Graphs/ImageHistogramAllLogins.png")
-	#print("")
-	#print("Histograms have been created in /Graphs !")
-	#print("")
-	#print("")
-	#print("Boxplots have been created in /Graphs !")
-	#print("")
+	makeHistogram(allLoginsDirectSeconds, [0, 5, 10, 15, 20, 25, 30], 0.5, 'Histogram: All Login Times Direct Scheme', 'Frequency', 'Seconds', "Graphs/DirectHistogramAllLogins.png")
+	makeHistogram(successesDirectSeconds, [0, 5, 10, 15, 20, 25, 30], 0.5, 'Histogram: All Success Times Direct Scheme', 'Frequency', 'Seconds', "Graphs/DirectHistogramSuccesses.png")
+	makeHistogram(failuresDirectSeconds, [0, 5, 10, 15, 20, 25, 30], 0.5, 'Histogram: All Failure Times Direct Scheme', 'Frequency', 'Seconds', "Graphs/ImageHistogramAllLogins.png")
+	print("")
+	print("Histograms have been created in /Graphs !")
+	print("")
+	print("")
+	print("Boxplots have been created in /Graphs !")
+	print("")
 
 
 
