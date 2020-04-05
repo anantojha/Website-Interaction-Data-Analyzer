@@ -158,10 +158,12 @@
     function opened(){
         random(); //Randomizes the password
         localStorage.setItem("str", trackstr[count]); //Stores the password in localStorage so it can go to Password.html
+        console.log("Opening popup - Password.html")
         window.open('Password.html','_blank','titlebar=no,toolbar=no,location=no, height = 350,width = 500'); //Opens Password.html
         setup();//Resets Index.html
     }
     function random(){
+        console.log("Creating password");
         mystring = "";//Resets mystring so that the previous data doesn't simply get added on
         for(let i = 0;i<7;i++){ //loops throught to give a random password 
             var temp = Math.floor(Math.random() * 8) + 1;
@@ -182,7 +184,11 @@
             else if (temp == 8)
                 mystring += "c";
         }
+        if (trackstr[count] != "")
+            console.log("Overwriting previous password");
         trackstr[count] = mystring; //keeps track of the password trackstr
+        console.log("Password made");
+
     }
     function send(x, y, z){
         let date = new Date();
@@ -220,6 +226,7 @@
         if(count > 5)
             submit();
         else{
+            console.log("Going to the next part");
             setup(); //Resets the screen
         }
     }
@@ -300,11 +307,13 @@
     function pass(){
         send('enter','start','');
         localStorage.setItem("str2", trackstr[order[count-3]]);
+        console.log("Opening popup - Testing.html");
         window.open('Testing.html','_blank','titlebar=no,toolbar=no,location=no, height = 220,width = 500');
         attempt++;
         setup();
     }
     function submit(){
+        console.log("Closing everything")
         localStorage.clear();
         document.getElementById("shop3").disabled = true;
         document.getElementById("shop4").disabled = true;
