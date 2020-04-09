@@ -2,10 +2,9 @@ Dependencies
 Make sure you have Node.js installed (https://nodejs.org/en/download/)
 
 Set Up on a localhost
-- Open Terminal
-- Navigate to where this folder is stored inside the Terminal
-- write "npm install" and then click enter
-- write "node server.js"
+- Navigate to project directory using command line
+- enter "npm install" this will install all other dependencies
+- enter "node server.js"
 - a message "Server has started" should pop up
 - go to http://localhost:8000/ to use the program
 
