@@ -1,3 +1,6 @@
+Dependencies
+Make sure you have Node.js installed (https://nodejs.org/en/download/)
+
 Set Up on a localhost
 - Open Terminal
 - Navigate to where this folder is stored inside the Terminal
