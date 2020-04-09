@@ -14,6 +14,8 @@ app.use( express.static('public'));
 app.use(express.json());
 app.set('view engine','ejs');
 
+console.log("Server has started");
+
 app.post('/data', (req, res)=>{
     const data = req.body;
     fs.appendFile('database.csv', data + '\n', (err) => {
