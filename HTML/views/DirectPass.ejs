@@ -8,14 +8,14 @@
         show() - This function is used to display the the 3 attempts only in there random order
         shuffle() - Shuffles the 3 attempts only
         setup() - Determines at what point what buttons are clickable
-        opened() - Opens the Password.html and sends the data it needs
+        openPass() - Opens the Password.html and sends the data it needs
         random() - randomizes the password
         send() - Sends the information gotten from the users to the server to the csv
         increase() - Keeps track of where you are in the program
-        first() - It displays when 3 attempts only for email is valid
-        second() - It displays when 3 attempts only for bank is valid
-        third() - It displays when 3 attempts only for shopping is valid
-        pass() - Opens up Testing.html and sends the important information through
+        email() - It displays when 3 attempts only for email is valid
+        bank() - It displays when 3 attempts only for bank is valid
+        shop() - It displays when 3 attempts only for shopping is valid
+        openTest() - Opens up Testing.html and sends the important information through
         submit() - Makes everything invalid when the user is complete
         id() - Gets the current id for the user
     */
@@ -23,29 +23,27 @@
     var mystring =""; //Used for the randomizing of passwords
     var trackstr = ["","",""]; //Keeps track of all three passwords
     var order = [0,1,2]; //Tracks the order of the random password testing
-    let event = "";
-    var count = 0;
-    var attempt = 0;
-    let user = "";
+    var count = 0; //Tracks the current part of the program 
+    var attempt = 0; //Tracks how many attempts the user has had
+    let user = ""; //Tracks the UserID of the user
     
-
-
     function show(){
         shuffle(order);//Shuffles the order
         for(let i = 0; i < 3; i++){//Runs through order and places the only 3 attempts in there random order
-            if (order[i] == 0){
-                document.write("<h4 id = 'text4'> Email <br> Only 3 attempts allowed <br><br> <button onclick = 'pass()' id = 'email3'>Enter</button><button onclick = 'increase()' id = 'email4'>Next</button></h4>");
+            if (order[i] == 0){//Writes out email for password testing
+                document.write("<h4 id = 'text4'> Email <br> Only 3 attempts allowed <br><br> <button onclick = 'openTest()' id = 'email3'>Enter</button><button onclick = 'increase()' id = 'email4'>Next</button></h4>");
             }
-            else if (order[i]== 1){
-                document.write("<h4 id = 'text5'>Bank <br> Only 3 attempts allowed <br><br>  <button onclick = 'pass()' id = 'bank3'>Enter</button><button onclick = 'increase()' id = 'bank4'>Next</button></h4>");
+            else if (order[i]== 1){//Writes out bank for password testing
+                document.write("<h4 id = 'text5'>Bank <br> Only 3 attempts allowed <br><br>  <button onclick = 'openTest()' id = 'bank3'>Enter</button><button onclick = 'increase()' id = 'bank4'>Next</button></h4>");
             }
-            else if(order[i]==2){   
-                document.write("<h4 id = 'text6'>Shopping <br> Only 3 attempts allowed <br><br>  <button onclick = 'pass()' id = 'shop3'>Enter</button><button onclick = 'increase()' id = 'shop4'>Next</button></h4>");
+            else if(order[i]==2){//Weittes out shopping for password testing
+                document.write("<h4 id = 'text6'>Shopping <br> Only 3 attempts allowed <br><br>  <button onclick = 'openTest()' id = 'shop3'>Enter</button><button onclick = 'increase()' id = 'shop4'>Next</button></h4>");
             }
         }
         
     }
     function shuffle(a) {
+        //Uses Fisher-Yates Algorithm to randomly sort through three numbers
         var j, x, i;
         for (i = a.length - 1; i > 0; i--) {
             j = Math.floor(Math.random() * (i + 1));
@@ -55,7 +53,8 @@
         }
     }
     function setup(){   
-        if(count==0){
+        if(count==0){//If the user is at the first part
+            //Enables and disables all cases
             document.getElementById("email1").disabled = false;
             document.getElementById("email2").disabled = false;
             document.getElementById("email3").disabled = true;
@@ -68,8 +67,9 @@
             document.getElementById("shop2").disabled = true;
             document.getElementById("shop3").disabled = true;
             document.getElementById("shop4").disabled = true;
-            if(trackstr[0]=="")
+            if(trackstr[0]=="")//Says to go to the next part you have to have created a password
                 document.getElementById("email2").disabled = true;
+            //Styling for the boxes
             document.getElementById("text1").style = "border:1px solid black; background-color: #c5fcc8";
             document.getElementById("text2").style = "border:1px solid black; background-color: #bababa";
             document.getElementById("text3").style = "border:1px solid black; background-color: #bababa";
@@ -77,7 +77,8 @@
             document.getElementById("text5").style = "border:1px solid black; background-color: #bababa";
             document.getElementById("text6").style = "border:1px solid black; background-color: #bababa";
         }
-        else if (count == 1){
+        else if (count == 1){ //If the user is at the sec part
+            //Enables and disables all cases
             document.getElementById("email1").disabled = true;
             document.getElementById("email2").disabled = true;
             document.getElementById("email3").disabled = true;
@@ -90,8 +91,9 @@
             document.getElementById("shop2").disabled = true;
             document.getElementById("shop3").disabled = true;
             document.getElementById("shop4").disabled = true;
-            if(trackstr[1]=="")
+            if(trackstr[1]=="")//Says to go to the next part you have to have created a password
                 document.getElementById("bank2").disabled = true;
+            //Styling for the boxes
             document.getElementById("text1").style = "border:1px solid black; background-color: #bababa";
             document.getElementById("text2").style = "border:1px solid black; background-color: #c5fcc8";
             document.getElementById("text3").style = "border:1px solid black; background-color: #bababa";
@@ -99,7 +101,8 @@
             document.getElementById("text5").style = "border:1px solid black; background-color: #bababa";
             document.getElementById("text6").style = "border:1px solid black; background-color: #bababa";
         }
-        else if (count==2){
+        else if (count==2){//If the user is at the third part
+            //Enables and disables all cases
             document.getElementById("email1").disabled = true;
             document.getElementById("email2").disabled = true;
             document.getElementById("email3").disabled = true;
@@ -112,8 +115,9 @@
             document.getElementById("shop2").disabled = false;
             document.getElementById("shop3").disabled = true;
             document.getElementById("shop4").disabled = true;
-            if(trackstr[2]=="")
+            if(trackstr[2]=="")//Says to go to the next part you have to have created a password
                 document.getElementById("shop2").disabled = true;
+            //Styling for the boxes
             document.getElementById("text1").style = "border:1px solid black; background-color: #bababa";
             document.getElementById("text2").style = "border:1px solid black; background-color: #bababa";
             document.getElementById("text3").style = "border:1px solid black; background-color: #c5fcc8";
@@ -121,41 +125,41 @@
             document.getElementById("text5").style = "border:1px solid black; background-color: #bababa";
             document.getElementById("text6").style = "border:1px solid black; background-color: #bababa";
         }
-        else if (count == 3){
-            if(order[0]==0){
-                first();
+        else if (count == 3){//States that if you are on the third part go to the next part
+            if(order[0]==0){//Goes to the 
+                email();
             }
             else if (order[0]==1){
-                sec();
+                bank();
             }
             else{
-                third();
+                shop();
             }
         }
         else if (count == 4){
             if(order[1]==0){
-                first();
+                email();
             }
             else if (order[1]==1){
-                sec();
+                bank();
             }
             else{
-                third();
+                shop();
             }
         }
         else if(count == 5){
             if(order[2]==0){
-                first();
+                email();
             }
             else if (order[2]==1){
-                sec();
+                bank();
             }
             else{
-                third();
+                shop();
             }
         }
     }
-    function opened(){
+    function openPass(){
         random(); //Randomizes the password
         localStorage.setItem("str", trackstr[count]); //Stores the password in localStorage so it can go to Password.html
         console.log("Opening popup - Password.html")
@@ -190,28 +194,26 @@
         console.log("Password made");
 
     }
-    function send(x, y, z){
-        let date = new Date();
-        let month = ((date.getMonth()+1) < 10 ? '0' : '') + (date.getMonth()+1);
-        let day = (date.getDay() < 10 ? '0' : '') + date.getDay();
-        let hour = (date.getHours() < 10 ? '0' : '') + date.getHours();
-        let min = (date.getMinutes() < 10 ? '0' : '') + date.getMinutes();
-        let sec = (date.getSeconds() < 10 ? '0' : '') + date.getSeconds();
+    function send(x, y, z){   
+        let date = new Date();//Sets up date
+        let month = ((date.getMonth()+1) < 10 ? '0' : '') + (date.getMonth()+1);//sets up month
+        let day = (date.getDay() < 10 ? '0' : '') + date.getDay(); //sets up day
+        let hour = (date.getHours() < 10 ? '0' : '') + date.getHours(); //sets up hour
+        let min = (date.getMinutes() < 10 ? '0' : '') + date.getMinutes(); //sets up min
+        let sec = (date.getSeconds() < 10 ? '0' : '') + date.getSeconds(); //sets up sec
 
         let dstr = date.getFullYear()+"-"+month+"-"+day+ " "+hour+":"+
-        min+":"+sec;
-        if(localStorage.getItem("hold") == null) {
-            localStorage.setItem("hold", JSON.stringify([])); 
-        }
-        if (z=="") 
+        min+":"+sec; //Sets up output for the date
+
+        if (z=="") //Checks if there was any information going in here otherwise it gives it, its own data
         {
             z = navigator.userAgent;
             z = JSON.stringify(z);
         }
         let rest = JSON.stringify([dstr, localStorage.getItem('user'), "directpass","directrandom", "qweadzxc", x,
-        y, z]);
+        y, z]); //Data to be outputted 
     
-        const options = {
+        const options = { //sends the data to the server
             method: 'POST',
             headers: {
                 "Content-type": "application/JSON"
@@ -223,14 +225,14 @@
     function increase(){
         attempt = 0; //Resets the number of attempts
         count++; //Goes to the next part of the program
-        if(count > 5)
+        if(count > 5)//Checks if the user is clicking next at the last part
             submit();
         else{
             console.log("Going to the next part");
             setup(); //Resets the screen
         }
     }
-    function first(){
+    function email(){//sets up all the page for email testing
         document.getElementById("email1").disabled = true;
         document.getElementById("email2").disabled = true;
         document.getElementById("email3").disabled = false;
@@ -244,10 +246,11 @@
         document.getElementById("shop3").disabled = true;
         document.getElementById("shop4").disabled = true;
 
-        if(attempt == 0)
+        if(attempt == 0)//Makes sure that user has at least 1 attempt
             document.getElementById("email4").disabled = true;
-        if(attempt == 3)
+        if(attempt == 3)//Caps the user off at 3 attempts
             document.getElementById("email3").disabled = true;
+        //Styling
         document.getElementById("text1").style = "border:1px solid black; background-color: #bababa";
         document.getElementById("text2").style = "border:1px solid black; background-color: #bababa";
         document.getElementById("text3").style = "border:1px solid black; background-color: #bababa";
@@ -255,7 +258,7 @@
         document.getElementById("text5").style = "border:1px solid black; background-color: #bababa";
         document.getElementById("text6").style = "border:1px solid black; background-color: #bababa";
     }
-    function sec(){
+    function bank(){//sets up all the page for bank testing
         document.getElementById("email1").disabled = true;
         document.getElementById("email2").disabled = true;
         document.getElementById("email3").disabled = true;
@@ -268,10 +271,11 @@
         document.getElementById("shop2").disabled = true;
         document.getElementById("shop3").disabled = true;
         document.getElementById("shop4").disabled = true;
-        if(attempt == 0)
+        if(attempt == 0)//Makes sure that user has at least 1 attempt
             document.getElementById("bank4").disabled = true;
-        if(attempt == 3)
+        if(attempt == 3)//Caps the user off at 3 attempts
             document.getElementById("bank3").disabled = true;
+        //Styling
         document.getElementById("text1").style = "border:1px solid black; background-color: #bababa";
         document.getElementById("text2").style = "border:1px solid black; background-color: #bababa";
         document.getElementById("text3").style = "border:1px solid black; background-color: #bababa";
@@ -279,7 +283,7 @@
         document.getElementById("text5").style = "border:1px solid black; background-color: #c5fcc8";
         document.getElementById("text6").style = "border:1px solid black; background-color: #bababa";
     }
-    function third(){
+    function shop(){//sets up all the page for shop testing
         document.getElementById("email1").disabled = true;
         document.getElementById("email2").disabled = true;
         document.getElementById("email3").disabled = true;
@@ -292,11 +296,11 @@
         document.getElementById("shop2").disabled = true;
         document.getElementById("shop3").disabled = false;
         document.getElementById("shop4").disabled = false;
-        if(attempt == 0)
+        if(attempt == 0)//Makes sure that user has at least 1 attempt
             document.getElementById("shop4").disabled = true;
-        if(attempt == 3){
+        if(attempt == 3)//Caps the user off at 3 attempts
             document.getElementById("shop3").disabled = true;
-        }
+        //Styling
         document.getElementById("text1").style = "border:1px solid black; background-color: #bababa";
         document.getElementById("text2").style = "border:1px solid black; background-color: #bababa";
         document.getElementById("text3").style = "border:1px solid black; background-color: #bababa";
@@ -304,28 +308,29 @@
         document.getElementById("text5").style = "border:1px solid black; background-color: #bababa";
         document.getElementById("text6").style = "border:1px solid black; background-color: #c5fcc8";   
     }
-    function pass(){
-        send('enter','start','');
-        localStorage.setItem("str2", trackstr[order[count-3]]);
+    function openTest(){
+        send('enter','start',''); //Sends info that the user has entered testing
+        localStorage.setItem("str2", trackstr[order[count-3]]); //Checks what password is going to be used
         console.log("Opening popup - Testing.html");
-        window.open('Testing.html','_blank','titlebar=no,toolbar=no,location=no, height = 220,width = 500');
-        attempt++;
-        setup();
+        window.open('Testing.html','_blank','titlebar=no,toolbar=no,location=no, height = 220,width = 500'); //Opens up the window
+        attempt++;//Adds 1 to total number of attempts
+        setup(); //Refresh main page
     }
     function submit(){
         console.log("Closing everything")
-        localStorage.clear();
-        document.getElementById("shop3").disabled = true;
+        localStorage.clear();//Clears the local data
+        document.getElementById("shop3").disabled = true; //Disables everything
         document.getElementById("shop4").disabled = true;
-        alert("Thank you we are done");
+        alert("Thank you we are done"); //Sends a thank you message
     }
     async function id(){
-        const response = await fetch('/user');
-        const as =  await response.json();
-        localStorage.setItem("user", as.id)
-        document.getElementById('test').innerHTML = "User: "+as.id;
+        const response = await fetch('/user'); //Gets the info for the users id from the server
+        const as =  await response.json(); //converts it to a json
+        localStorage.setItem("user", as.id); //temp stores it so that the userID can be used for the database
+        document.getElementById('test').innerHTML = "User: "+as.id;//Outputs the userID to the main page
     }
-    if (performance.navigation.type == 1) {
+
+    if (performance.navigation.type == 1) {//On refresh clears all localStorage data
         localStorage.clear();
     }
 </script>
@@ -336,25 +341,25 @@
     <h4 id = "text1"> 
         Email
         <br><br>
-        <button onclick = "opened(); send('create','start','');" id = "email1" >Create</button>
+        <button onclick = "openPass(); send('create','start','');" id = "email1" >Create</button>
         <button onclick = "increase()" id = email2>Next</button>
     </h4>
     <h4 id = "text2">
         Bank
         <br><br>
-        <button onclick = "opened(); send('create','start','');;" id = "bank1">Create</button>
+        <button onclick = "openPass(); send('create','start','');;" id = "bank1">Create</button>
         <button onclick = "increase()" id = bank2>Next</button>
     </h4>
     <h4 id = "text3">
         Shopping
         <br><br>
-        <button onclick = "opened(); send('create','start','');" id = "shop1">Create</button>
+        <button onclick = "openPass(); send('create','start','');" id = "shop1">Create</button>
         <button onclick = "increase()" id = shop2>Next</button>
     </h4>
     <script>
-        show();
-        id();
-        setup();
+        show(); //Shows the last three parts
+        id(); //Gets user id
+        setup(); //Sets up the page
     </script>
 </body>
 </html>
