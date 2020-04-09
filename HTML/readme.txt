@@ -1,7 +1,7 @@
 Dependencies
 Make sure you have Node.js installed (https://nodejs.org/en/download/)
 
-Set Up on a localhost
+Set up on a localhost
 - Navigate to project directory using command line
 - enter "npm install" this will install all other dependencies
 - enter "node server.js"
