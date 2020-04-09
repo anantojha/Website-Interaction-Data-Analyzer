@@ -30,3 +30,4 @@ The process of setting up the programon oepnstack via webserver is as following:
     2.change the parts of code that when inqurey files, it would instead inqurey them in directory "comp3008_28/"
     3.run the program locally on port 80
 
+The program would run locally on the port 80, which is being proxy to the webserver. The apache webserver will then utilize the program that is running on port 80 to make it avaliable on the url:https://comp3008-w20.scs.carleton.ca/comp3008_28/
