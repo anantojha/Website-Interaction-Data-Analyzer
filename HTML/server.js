@@ -2,7 +2,7 @@
     app.post('/data') - sends info to the csv from the html
     app.get('/') - takes you to the home page/ DirectPass.ejs
     app.get('/user') - sends the info to the form of what user they are
-    app.get('/Password.html') - sends you to the Password.ejs
+    app.get('/Practice.html') - sends you to the Practice.ejs
     app.get('/Testing.html') - sends you to the Testing.ejs
 
 */
@@ -35,8 +35,8 @@ app.get('/user',function (req,res){
     res.json({id:temp});
 })
 
-app.get('/Password.html', function (req, res){
-    res.render('Password');
+app.get('/Practice.html', function (req, res){
+    res.render('Practice');
 });
 app.get('/Testing.html', function (req, res){
     res.render('Testing');
