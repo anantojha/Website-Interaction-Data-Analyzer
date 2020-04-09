@@ -22,3 +22,11 @@ Views
 
 public
     Image.png - an image that was used in Testing.ejs and Password.ejs
+
+Set up on openstack
+
+The process of setting up the programon oepnstack via webserver is as following:
+    1.ask SCS to proxy the webserver to port 80 on the dev server instance
+    2.change the parts of code that when inqurey files, it would instead inqurey them in directory "comp3008_28/"
+    3.run the program locally on port 80
+
