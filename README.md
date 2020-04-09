@@ -13,4 +13,5 @@ Install Dependicies:
 Running Instructions:
 
 -> navigate to project directory using command line \
--> enter 'python2 csv_reader.py 1' to compute 
+-> enter 'python2 csv_reader.py 1' to compute statistic for part 1
+-> enter 'python2 csv_reader.py 2' to compute statistic for part 2
