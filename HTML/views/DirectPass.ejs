@@ -8,7 +8,7 @@
         show() - This function is used to display the the 3 attempts only in there random order
         shuffle() - Shuffles the 3 attempts only
         setup() - Determines at what point what buttons are clickable
-        openPass() - Opens the Password.html and sends the data it needs
+        openPractice() - Opens the Practice.html and sends the data it needs
         random() - randomizes the password
         send() - Sends the information gotten from the users to the server to the csv
         increase() - Keeps track of where you are in the program
@@ -159,11 +159,11 @@
             }
         }
     }
-    function openPass(){
+    function openPractice(){
         random(); //Randomizes the password
         localStorage.setItem("str", trackstr[count]); //Stores the password in localStorage so it can go to Password.html
         console.log("Opening popup - Password.html")
-        window.open('Password.html','_blank','titlebar=no,toolbar=no,location=no, height = 350,width = 500'); //Opens Password.html
+        window.open('Practice.html','_blank','titlebar=no,toolbar=no,location=no, height = 350,width = 500'); //Opens Password.html
         setup();//Resets Index.html
     }
     function random(){
@@ -341,19 +341,19 @@
     <h4 id = "text1"> 
         Email
         <br><br>
-        <button onclick = "openPass(); send('create','start','');" id = "email1" >Create</button>
+        <button onclick = "openPractice(); send('create','start','');" id = "email1" >Create</button>
         <button onclick = "increase()" id = email2>Next</button>
     </h4>
     <h4 id = "text2">
         Bank
         <br><br>
-        <button onclick = "openPass(); send('create','start','');;" id = "bank1">Create</button>
+        <button onclick = "openPractice(); send('create','start','');;" id = "bank1">Create</button>
         <button onclick = "increase()" id = bank2>Next</button>
     </h4>
     <h4 id = "text3">
         Shopping
         <br><br>
-        <button onclick = "openPass(); send('create','start','');" id = "shop1">Create</button>
+        <button onclick = "openPractice(); send('create','start','');" id = "shop1">Create</button>
         <button onclick = "increase()" id = shop2>Next</button>
     </h4>
     <script>
