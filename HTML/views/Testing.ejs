@@ -7,48 +7,46 @@
             send() - Sends the information gotten from the users to the server to the csv
             check() - Checks if you ented the password right or wrong and then closes the browser
         */
-        function send(x, y, z){
-        let date = new Date();
-        let month = ((date.getMonth()+1) < 10 ? '0' : '') + (date.getMonth()+1);
-        let day = (date.getDay() < 10 ? '0' : '') + date.getDay();
-        let hour = (date.getHours() < 10 ? '0' : '') + date.getHours();
-        let min = (date.getMinutes() < 10 ? '0' : '') + date.getMinutes();
-        let sec = (date.getSeconds() < 10 ? '0' : '') + date.getSeconds();
+        function send(x, y, z){   
+            let date = new Date();//Sets up date
+            let month = ((date.getMonth()+1) < 10 ? '0' : '') + (date.getMonth()+1);//sets up month
+            let day = (date.getDay() < 10 ? '0' : '') + date.getDay(); //sets up day
+            let hour = (date.getHours() < 10 ? '0' : '') + date.getHours(); //sets up hour
+            let min = (date.getMinutes() < 10 ? '0' : '') + date.getMinutes(); //sets up min
+            let sec = (date.getSeconds() < 10 ? '0' : '') + date.getSeconds(); //sets up sec
 
-        let dstr = date.getFullYear()+"-"+month+"-"+day+ " "+hour+":"+
-        min+":"+sec;
-        if(localStorage.getItem("hold") == null) {
-            localStorage.setItem("hold", JSON.stringify([])); 
+            let dstr = date.getFullYear()+"-"+month+"-"+day+ " "+hour+":"+
+            min+":"+sec; //Sets up output for the date
+
+            if (z=="") //Checks if there was any information going in here otherwise it gives it, its own data
+            {
+                z = navigator.userAgent;
+                z = JSON.stringify(z);
+            }
+            let rest = JSON.stringify([dstr, localStorage.getItem('user'), "directpass","directrandom", "qweadzxc", x,
+            y, z]); //Data to be outputted 
+        
+            const options = { //sends the data to the server
+                method: 'POST',
+                headers: {
+                    "Content-type": "application/JSON"
+                },
+                body: rest
+            };
+            fetch('/data', options)
         }
-        if (z=="") 
-        {
-            z = navigator.userAgent;
-            z = JSON.stringify(z);
-        }
-        let rest = JSON.stringify([dstr, localStorage.getItem('user'), "directpass","directrandom", "qweadzxc", x,
-        y, z]);
-    
-        const options = {
-            method: 'POST',
-            headers: {
-                "Content-type": "application/JSON"
-            },
-            body: rest
-        };
-        fetch('/data', options)
-    }
         function check(){
-            var temp = localStorage.getItem("str2");
-            send('enter', 'passwordSubmitted', 'pwN:'+temp)
-            if(temp == document.getElementById("in").value){
-                send('login','success',temp);
+            var temp = localStorage.getItem("str2"); //Gets the password
+            send('enter', 'passwordSubmitted', 'pwN:'+temp); //Sends info that password was submitted
+            if(temp == document.getElementById("in").value){ //Checks if the user got it right
+                send('login','success',temp); //sends info that the user got it right
                 alert("You got it right");
             }
             else{
-                send('login','failure',temp);
+                send('login','failure',temp); //sends info that the user got it wrong
                 alert("You got it wrong");
             }
-            window.close();
+            window.close();//Closes pop-up
         }
     </script>
 </head>
