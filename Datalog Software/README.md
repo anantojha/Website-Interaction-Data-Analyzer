@@ -14,4 +14,7 @@ Running Instructions:
 
 -> navigate to project directory using command line \
 -> enter 'python2 csv_reader.py A' to compute results for part A \
--> enter 'python2 csv_reader.py B' to compute results for part B
+   -> 'Output_Part_A.csv' is generated \
+\
+-> enter 'python2 csv_reader.py B' to compute results for part B \
+   -> 'Output_Part_B.csv' is generated
