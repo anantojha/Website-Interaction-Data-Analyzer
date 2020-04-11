@@ -1,0 +1,38 @@
+
+ -----------
+| TEAM 3008 |
+ -----------
+
+Anant Ojha, 101072523 
+
+Ethan Leider, 101078035
+
+Stan Ma, 101081611
+
+
+
+CONTRIBUTIONS:
+	
+	Anant Ojha:
+		- Part A Step 1
+		- Part A Step 2
+		- Part A Step 3
+		- Part A Step 4
+		- Part B Step 1
+		- Part B Step 6
+
+	Ethan Leider:
+		- Part B Step 2
+                - Part B Step 3
+
+	Stan Ma:
+                - Part B Step 4
+                - Part B Step 5
+
+
+
+
+
+
+
+
