@@ -13,7 +13,7 @@ Install Dependicies:
 Running Instructions:
 
 -> navigate to project directory using command line \
-   ---> '~/.../Project_2/Datalog Software/' \
+   ---> '~/.../Project_2/Datalog\ Software/' \
 \
 -> enter 'python2 csv_reader.py A' to compute results for part A \
    ---> 'Output_Part_A.csv' is generated \
