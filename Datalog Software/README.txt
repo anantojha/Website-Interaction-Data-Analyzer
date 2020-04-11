@@ -1,4 +1,4 @@
-# Website-Interaction-Data-Analyzer
+# DataLog Software
 Parse and Analyze raw website user interactional data using CSV files  
 
 
